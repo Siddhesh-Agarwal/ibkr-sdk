@@ -77,7 +77,7 @@ class TestPortfolioAPI:
         client = IBKRClient()
         accounts = client.portfolio.accounts()
         assert len(accounts) == 2
-        assert accounts[0].accountId == "DU123456"
+        assert accounts[0].account_id == "DU123456"
         assert accounts[1].currency == "EUR"
 
     @responses.activate
@@ -118,7 +118,7 @@ class TestPortfolioAPI:
         )
         client = IBKRClient()
         summary = client.portfolio.summary("DU123456")
-        assert summary.accountType == "CASH"
+        assert summary.account_type == "CASH"
 
 
 class TestOrdersAPI:

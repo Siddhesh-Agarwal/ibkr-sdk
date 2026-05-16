@@ -1,41 +1,42 @@
-
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class IndividualPosition(BaseModel):
-    acctId: str | None = None
-    allExchanges: str | None = None
-    assetClass: str | None = None
-    avgCost: float | None = None
-    avgPrice: float | None = None
-    baseAvgCost: float | None = None
-    baseAvgPrice: float | None = None
-    baseMktPrice: float | None = None
-    baseMktValue: float | None = None
-    baseRealizedPnl: float | None = None
-    baseUnrealizedPnl: float | None = None
-    chineseName: str | None = None
-    conid: int | None = None
-    contractDesc: str | None = None
-    countryCode: str | None = None
-    currency: str | None = None
-    expiry: str | None = None
-    fullName: str | None = None
-    group: str | None = None
-    hasOptions: bool | None = None
-    isUS: bool | None = None
-    listingExchange: str | None = None
-    mktPrice: float | None = None
-    mktValue: float | None = None
-    model: str | None = None
-    multiplier: float | None = None
-    name: str | None = None
-    position: float | None = None
-    putOrCall: str | None = None
-    realizedPnl: float | None = None
-    sector: str | None = None
-    strike: str | None = None
-    ticker: str | None = None
-    type: str | None = None
-    undConid: int | None = None
-    unrealizedPnl: float | None = None
+    model_config = {"populate_by_name": True}
+
+    acct_id: str | None = Field(default=None, alias="acctId")
+    all_exchanges: str | None = Field(default=None, alias="allExchanges")
+    asset_class: str | None = Field(default=None, alias="assetClass")
+    avg_cost: float | None = Field(default=None, alias="avgCost")
+    avg_price: float | None = Field(default=None, alias="avgPrice")
+    base_avg_cost: float | None = Field(default=None, alias="baseAvgCost")
+    base_avg_price: float | None = Field(default=None, alias="baseAvgPrice")
+    base_mkt_price: float | None = Field(default=None, alias="baseMktPrice")
+    base_mkt_value: float | None = Field(default=None, alias="baseMktValue")
+    base_realized_pnl: float | None = Field(default=None, alias="baseRealizedPnl")
+    base_unrealized_pnl: float | None = Field(default=None, alias="baseUnrealizedPnl")
+    chinese_name: str | None = Field(default=None, alias="chineseName")
+    conid: int | None = Field(default=None, alias="conid")
+    contract_desc: str | None = Field(default=None, alias="contractDesc")
+    country_code: str | None = Field(default=None, alias="countryCode")
+    currency: str | None = Field(default=None, alias="currency")
+    expiry: str | None = Field(default=None, alias="expiry")
+    full_name: str | None = Field(default=None, alias="fullName")
+    group: str | None = Field(default=None, alias="group")
+    has_options: bool | None = Field(default=None, alias="hasOptions")
+    is_us: bool | None = Field(default=None, alias="isUS")
+    listing_exchange: str | None = Field(default=None, alias="listingExchange")
+    mkt_price: float | None = Field(default=None, alias="mktPrice")
+    mkt_value: float | None = Field(default=None, alias="mktValue")
+    model: str | None = Field(default=None, alias="model")
+    multiplier: float | None = Field(default=None, alias="multiplier")
+    name: str | None = Field(default=None, alias="name")
+    position: float | None = Field(default=None, alias="position")
+    put_or_call: str | None = Field(default=None, alias="putOrCall")
+    realized_pnl: float | None = Field(default=None, alias="realizedPnl")
+    sector: str | None = Field(default=None, alias="sector")
+    strike: str | None = Field(default=None, alias="strike")
+    ticker: str | None = Field(default=None, alias="ticker")
+    type: str | None = Field(default=None, alias="type")
+    und_conid: int | None = Field(default=None, alias="undConid")
+    unrealized_pnl: float | None = Field(default=None, alias="unrealizedPnl")

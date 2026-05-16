@@ -9,30 +9,32 @@ from ibkr.models.scanner import IserverScannerParams, IserverScannerRunResponse
 
 
 class PortfolioAPI:
-    def __init__(self, client: 'IBKRClient'):
+    def __init__(self, client: "IBKRClient"):
         self.client = client
 
     def accounts(self) -> list[AccountAttributes]:
         data = self.client._get("/v1/api/portfolio/accounts")
         return [AccountAttributes(**a) for a in data]
 
-    def positions(self, accountId: str, pageId: int = 0) -> list[IndividualPosition]:
-        data = self.client._get(f"/v1/api/portfolio/{accountId}/positions/{pageId}")
+    def positions(self, account_id: str, page_id: int = 0) -> list[IndividualPosition]:
+        data = self.client._get(f"/v1/api/portfolio/{account_id}/positions/{page_id}")
         return [IndividualPosition(**p) for p in data]
 
-    def ledger(self, accountId: str) -> dict:
-        return self.client._get(f"/v1/api/portfolio/{accountId}/ledger")
+    def ledger(self, account_id: str) -> dict:
+        return self.client._get(f"/v1/api/portfolio/{account_id}/ledger")
 
-    def summary(self, accountId: str) -> AccountSummaryResponse:
-        data = self.client._get(f"/v1/api/portfolio/{accountId}/summary")
+    def summary(self, account_id: str) -> AccountSummaryResponse:
+        data = self.client._get(f"/v1/api/portfolio/{account_id}/summary")
         return AccountSummaryResponse(**data)
 
 
 class OrdersAPI:
-    def __init__(self, client: 'IBKRClient'):
+    def __init__(self, client: "IBKRClient"):
         self.client = client
 
-    def list_orders(self, filters: str | None = None, force: bool = False) -> LiveOrdersResponse:
+    def list_orders(
+        self, filters: str | None = None, force: bool = False
+    ) -> LiveOrdersResponse:
         params = {}
         if filters:
             params["filters"] = filters
@@ -41,38 +43,43 @@ class OrdersAPI:
         data = self.client._get("/v1/api/iserver/account/orders", params=params)
         return LiveOrdersResponse(**data)
 
-    def get_order(self, accountId: str, orderId: str) -> dict:
-        return self.client._get(f"/v1/api/iserver/account/{accountId}/order/{orderId}")
+    def get_order(self, account_id: str, order_id: str) -> dict:
+        return self.client._get(
+            f"/v1/api/iserver/account/{account_id}/order/{order_id}"
+        )
 
 
 class MarketDataAPI:
-    def __init__(self, client: 'IBKRClient'):
+    def __init__(self, client: "IBKRClient"):
         self.client = client
 
-    def snapshot(self, conids: list[int], fields: list[str] | None = None) -> list[IserverSnapshot]:
+    def snapshot(
+        self, conids: list[int], fields: list[str] | None = None
+    ) -> list[IserverSnapshot]:
         payload = {"conids": conids}
         if fields:
             payload["fields"] = fields
         data = self.client._post("/v1/api/iserver/marketdata/snapshot", json=payload)
         return [IserverSnapshot(**s) for s in data]
 
-    def history(self, conid: int, period: str, bar: str = "1 min",
-                outsideRegularTradingHours: bool = False) -> dict:
+    def history(
+        self, conid: int, period: str, bar: str = "1 min", outside_rth: bool = False
+    ) -> dict:
         params = {
             "conid": conid,
             "period": period,
             "bar": bar,
-            "outsideRegularTradingHours": outsideRegularTradingHours
+            "outsideRegularTradingHours": outside_rth,
         }
         return self.client._get("/v1/api/iserver/marketdata/history", params=params)
 
 
 class ContractAPI:
-    def __init__(self, client: 'IBKRClient'):
+    def __init__(self, client: "IBKRClient"):
         self.client = client
 
-    def search(self, symbol: str, secType: str = "STK") -> list[ContractInfo]:
-        payload = {"symbol": symbol, "secType": secType}
+    def search(self, symbol: str, sec_type: str = "STK") -> list[ContractInfo]:
+        payload = {"symbol": symbol, "secType": sec_type}
         data = self.client._post("/v1/api/iserver/secdef/search", json=payload)
         return [ContractInfo(**c) for c in data.get("contracts", [])]
 
@@ -81,7 +88,7 @@ class ContractAPI:
 
 
 class ScannerAPI:
-    def __init__(self, client: 'IBKRClient'):
+    def __init__(self, client: "IBKRClient"):
         self.client = client
 
     def params(self) -> IserverScannerParams:
@@ -94,7 +101,7 @@ class ScannerAPI:
 
 
 class FAAPI:
-    def __init__(self, client: 'IBKRClient'):
+    def __init__(self, client: "IBKRClient"):
         self.client = client
 
     def account_details(self) -> dict:
@@ -105,7 +112,7 @@ class FAAPI:
 
 
 class FYIAPI:
-    def __init__(self, client: 'IBKRClient'):
+    def __init__(self, client: "IBKRClient"):
         self.client = client
 
     def notifications(self) -> dict:

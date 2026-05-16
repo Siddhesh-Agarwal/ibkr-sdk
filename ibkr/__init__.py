@@ -6,4 +6,10 @@ from ibkr.exceptions import (
     IBKRValidationError,
 )
 
-__all__ = ["IBKRAPIError", "IBKRClient", "IBKRConnectionError", "IBKRError", "IBKRValidationError"]
+__all__ = [
+    "IBKRAPIError",
+    "IBKRClient",
+    "IBKRConnectionError",
+    "IBKRError",
+    "IBKRValidationError",
+]

@@ -22,14 +22,14 @@ class TestAccountAttributes:
             "type": "DEMO"
         }
         acct = AccountAttributes(**account_example)
-        assert acct.accountId == "DU123456"
+        assert acct.account_id == "DU123456"
         assert acct.currency == "USD"
-        assert acct.accountTitle == "John Smith, LLC"
-        assert acct.businessType == "IB_SALES"
+        assert acct.account_title == "John Smith, LLC"
+        assert acct.business_type == "IB_SALES"
 
     def test_minimal_account(self):
-        acct = AccountAttributes(accountId="DU999999")
-        assert acct.accountId == "DU999999"
+        acct = AccountAttributes(account_id="DU999999")
+        assert acct.account_id == "DU999999"
         assert acct.currency is None
 
 
@@ -69,7 +69,7 @@ class TestIndividualPosition:
         assert pos.conid == 123456
         assert pos.ticker == "AAPL"
         assert pos.position == 100.0
-        assert pos.unrealizedPnl == 475.0
+        assert pos.unrealized_pnl == 475.0
 
     def test_minimal_position(self):
         pos = IndividualPosition(conid=999)
@@ -121,7 +121,7 @@ class TestLiveOrdersResponse:
         response = LiveOrdersResponse(**orders_example)
         assert len(response.orders) == 1
         assert response.orders[0].ticker == "AAPL"
-        assert response.orders[0].orderId == 12345
+        assert response.orders[0].order_id == 12345
         assert response.snapshot is True
 
     def test_empty_orders(self):
@@ -144,7 +144,7 @@ class TestOrder:
         }
         order = Order(**order_data)
         assert order.conid == "123456"
-        assert order.orderType == "LMT"
+        assert order.order_type == "LMT"
         assert order.price == "150.00"
 
     def test_order_with_optional_fields(self):
@@ -158,8 +158,8 @@ class TestOrder:
             "totalSize": "100"
         }
         order = Order(**order_data)
-        assert order.filledQuantity == "50"
-        assert order.timeInForce == "GTC"
+        assert order.filled_quantity == "50"
+        assert order.time_in_force == "GTC"
 
 
 class TestIserverSnapshot:
@@ -212,10 +212,10 @@ class TestAccountSummaryResponse:
             ]
         }
         summary = AccountSummaryResponse(**summary_data)
-        assert summary.accountType == "CASH"
-        assert len(summary.cashBalances) == 2
-        assert summary.cashBalances[0].currency == "USD"
+        assert summary.account_type == "CASH"
+        assert len(summary.cash_balances) == 2
+        assert summary.cash_balances[0].currency == "USD"
 
     def test_account_summary_minimal(self):
         summary = AccountSummaryResponse()
-        assert summary.cashBalances == []
+        assert summary.cash_balances == []
