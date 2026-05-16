@@ -28,7 +28,7 @@ class TestAccountAttributes:
         assert acct.business_type == "IB_SALES"
 
     def test_minimal_account(self):
-        acct = AccountAttributes(account_id="DU999999")
+        acct = AccountAttributes(accountId="DU999999")
         assert acct.account_id == "DU999999"
         assert acct.currency is None
 
