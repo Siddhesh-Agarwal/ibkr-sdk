@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import requests
 
 from ibkr.exceptions import IBKRAPIError
@@ -15,7 +17,7 @@ class AuthHandler:
             f"{self.base_url}/v1/api/iserver/auth/status",
             json={"username": username, "password": password},
         )
-        if response.status_code == 200:
+        if response.status_code == HTTPStatus.OK:
             data = response.json()
             if data.get("status") == "connected":
                 self._authenticated = True
@@ -27,14 +29,14 @@ class AuthHandler:
     def tickle(self) -> dict:
         """Ping server to refresh/validate session."""
         response = self.session.get(f"{self.base_url}/v1/api/tickle")
-        if response.status_code == 200:
+        if response.status_code == HTTPStatus.OK:
             return response.json()
         raise IBKRAPIError(response.status_code, "Tickle failed")
 
     def logout(self) -> dict:
         """End session."""
         response = self.session.post(f"{self.base_url}/v1/api/logout")
-        if response.status_code == 200:
+        if response.status_code == HTTPStatus.OK:
             self._authenticated = False
             return response.json()
         raise IBKRAPIError(response.status_code, "Logout failed")

@@ -19,7 +19,7 @@ class TestAccountAttributes:
             "displayName": "John Smith, LLC",
             "currency": "USD",
             "id": "DU123456",
-            "type": "DEMO"
+            "type": "DEMO",
         }
         acct = AccountAttributes(**account_example)
         assert acct.account_id == "DU123456"
@@ -63,7 +63,7 @@ class TestIndividualPosition:
             "ticker": "AAPL",
             "type": "AAPL",
             "undConid": None,
-            "unrealizedPnl": 475.0
+            "unrealizedPnl": 475.0,
         }
         pos = IndividualPosition(**position_example)
         assert pos.conid == 123456
@@ -113,10 +113,10 @@ class TestLiveOrdersResponse:
                     "ticker": "AAPL",
                     "timeInForce": "DAY",
                     "totalCashSize": "",
-                    "totalSize": "100"
+                    "totalSize": "100",
                 }
             ],
-            "snapshot": True
+            "snapshot": True,
         }
         response = LiveOrdersResponse(**orders_example)
         assert len(response.orders) == 1
@@ -155,7 +155,7 @@ class TestOrder:
             "remainingQuantity": "50",
             "secType": "STK",
             "timeInForce": "GTC",
-            "totalSize": "100"
+            "totalSize": "100",
         }
         order = Order(**order_data)
         assert order.filled_quantity == "50"
@@ -175,8 +175,8 @@ class TestIserverSnapshot:
                 "31": "155.50",
                 "32": "155.50",
                 "33": "155.50",
-                "34": "155.50"
-            }
+                "34": "155.50",
+            },
         }
         snapshot = IserverSnapshot(**snapshot_data)
         assert snapshot.conid == 123456
@@ -208,8 +208,8 @@ class TestAccountSummaryResponse:
             "maintenanceMargin": 20000,
             "cashBalances": [
                 {"currency": "USD", "balance": 80000, "settledCash": 80000},
-                {"currency": "EUR", "balance": 20000, "settledCash": 20000}
-            ]
+                {"currency": "EUR", "balance": 20000, "settledCash": 20000},
+            ],
         }
         summary = AccountSummaryResponse(**summary_data)
         assert summary.account_type == "CASH"

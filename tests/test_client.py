@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import pytest
 import responses
 
@@ -20,7 +22,7 @@ class TestIBKRClient:
             responses.POST,
             "https://api.ibkr.com/v1/api/iserver/auth/status",
             json={"status": "connected", "user": {"username": "testuser"}},
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         result = client.connect("testuser", "testpass")
@@ -32,7 +34,7 @@ class TestIBKRClient:
             responses.POST,
             "https://api.ibkr.com/v1/api/iserver/auth/status",
             json={"status": "need_password_change", "message": "Password expired"},
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         with pytest.raises(IBKRAPIError) as exc_info:
@@ -45,7 +47,7 @@ class TestIBKRClient:
             responses.POST,
             "https://api.ibkr.com/v1/api/logout",
             json={"status": "logout"},
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         result = client.disconnect()
@@ -72,7 +74,7 @@ class TestPortfolioAPI:
                     "type": "MARGIN",
                 },
             ],
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         accounts = client.portfolio.accounts()
@@ -89,7 +91,7 @@ class TestPortfolioAPI:
                 {"conid": 123456, "ticker": "AAPL", "position": 100.0},
                 {"conid": 654321, "ticker": "GOOGL", "position": 50.0},
             ],
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         positions = client.portfolio.positions("DU123456")
@@ -102,7 +104,7 @@ class TestPortfolioAPI:
             responses.GET,
             "https://api.ibkr.com/v1/api/portfolio/DU123456/ledger",
             json={"cash": {"USD": 10000}, "netLiquidationValue": 50000},
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         ledger = client.portfolio.ledger("DU123456")
@@ -114,7 +116,7 @@ class TestPortfolioAPI:
             responses.GET,
             "https://api.ibkr.com/v1/api/portfolio/DU123456/summary",
             json={"accountType": "CASH", "balance": 100000, "cashBalances": []},
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         summary = client.portfolio.summary("DU123456")
@@ -139,7 +141,7 @@ class TestOrdersAPI:
                 ],
                 "snapshot": True,
             },
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         orders = client.orders.list_orders()
@@ -153,7 +155,7 @@ class TestOrdersAPI:
             responses.GET,
             "https://api.ibkr.com/v1/api/iserver/account/orders",
             json={"orders": [], "snapshot": False},
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         orders = client.orders.list_orders(filters="STK")
@@ -165,7 +167,7 @@ class TestOrdersAPI:
             responses.GET,
             "https://api.ibkr.com/v1/api/iserver/account/orders",
             json={"orders": [], "snapshot": True},
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         orders = client.orders.list_orders(force=True)
@@ -177,7 +179,7 @@ class TestOrdersAPI:
             responses.GET,
             "https://api.ibkr.com/v1/api/iserver/account/DU123456/order/12345",
             json={"orderId": 12345, "status": "Filled"},
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         order = client.orders.get_order("DU123456", "12345")
@@ -194,7 +196,7 @@ class TestMarketDataAPI:
                 {"conid": 123456, "conidEx": "123456--NASDAQ", "server_id": "s1"},
                 {"conid": 654321, "conidEx": "654321--NYSE", "server_id": "s2"},
             ],
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         snapshots = client.marketdata.snapshot([123456, 654321])
@@ -207,7 +209,7 @@ class TestMarketDataAPI:
             responses.POST,
             "https://api.ibkr.com/v1/api/iserver/marketdata/snapshot",
             json=[{"conid": 123456, "field_6509": "155.50"}],
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         snapshots = client.marketdata.snapshot([123456], fields=["31", "32"])
@@ -231,7 +233,7 @@ class TestMarketDataAPI:
                     }
                 ],
             },
-            status=200,
+            status=HTTPStatus.OK,
         )
         client = IBKRClient()
         history = client.marketdata.history(123456, "1 D")
@@ -251,7 +253,7 @@ class TestClientErrorHandling:
         client = IBKRClient()
         with pytest.raises(IBKRAPIError) as exc_info:
             client.portfolio.accounts()
-        assert exc_info.value.status == 404
+        assert exc_info.value.status == HTTPStatus.NOT_FOUND
 
     @responses.activate
     def test_post_error(self):
@@ -264,4 +266,4 @@ class TestClientErrorHandling:
         client = IBKRClient()
         with pytest.raises(IBKRAPIError) as exc_info:
             client.marketdata.snapshot([999999])
-        assert exc_info.value.status == 400
+        assert exc_info.value.status == HTTPStatus.BAD_REQUEST

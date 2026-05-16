@@ -17,7 +17,9 @@ class FilterListItem(BaseModel):
     display_name: str | None = Field(default=None, alias="displayName")
     code: str | None = Field(default=None, alias="code")
     type: str | None = Field(default=None, alias="type")
-    combo_values: list[ComboValuesItem] = Field(default_factory=list, alias="comboValues")
+    combo_values: list[ComboValuesItem] = Field(
+        default_factory=list, alias="comboValues"
+    )
 
 
 class LocationsItem(BaseModel):
@@ -63,10 +65,16 @@ class ScanTypeListItem(BaseModel):
 class IserverScannerParams(BaseModel):
     model_config = {"populate_by_name": True}
 
-    scan_type_list: list[ScanTypeListItem] = Field(default_factory=list, alias="scanTypeList")
-    instrument_list: list[InstrumentsItem] = Field(default_factory=list, alias="instrumentList")
+    scan_type_list: list[ScanTypeListItem] = Field(
+        default_factory=list, alias="scanTypeList"
+    )
+    instrument_list: list[InstrumentsItem] = Field(
+        default_factory=list, alias="instrumentList"
+    )
     filter_list: list[FilterListItem] = Field(default_factory=list, alias="filterList")
-    location_tree: list[LocationItem] = Field(default_factory=list, alias="locationTree")
+    location_tree: list[LocationItem] = Field(
+        default_factory=list, alias="locationTree"
+    )
 
 
 class FilterItem(BaseModel):
@@ -93,9 +101,13 @@ class ContractItem(BaseModel):
     symbol: str | None = Field(default=None, alias="symbol")
     conidex: str | None = Field(default=None, alias="conidex")
     con_id: int | None = Field(default=None, alias="conId")
-    available_chart_periods: str | None = Field(default=None, alias="availableChartPeriods")
+    available_chart_periods: str | None = Field(
+        default=None, alias="availableChartPeriods"
+    )
     company_name: str | None = Field(default=None, alias="companyName")
-    contract_description_1: str | None = Field(default=None, alias="contractDescription1")
+    contract_description_1: str | None = Field(
+        default=None, alias="contractDescription1"
+    )
     listing_exchange: str | None = Field(default=None, alias="listingExchange")
     sec_type: str | None = Field(default=None, alias="secType")
 

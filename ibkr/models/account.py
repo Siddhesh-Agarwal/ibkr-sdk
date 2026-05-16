@@ -20,7 +20,9 @@ class AccountSummaryResponse(BaseModel):
     available_funds: int | None = Field(default=None, alias="availableFunds")
     excess_liquidity: int | None = Field(default=None, alias="excessLiquidity")
     net_liquidation_value: int | None = Field(default=None, alias="netLiquidationValue")
-    equity_with_loan_value: int | None = Field(default=None, alias="equityWithLoanValue")
+    equity_with_loan_value: int | None = Field(
+        default=None, alias="equityWithLoanValue"
+    )
     reg_t_loan: int | None = Field(default=None, alias="regTLoan")
     securities_gvp: int | None = Field(default=None, alias="securitiesGVP")
     total_cash_value: int | None = Field(default=None, alias="totalCashValue")

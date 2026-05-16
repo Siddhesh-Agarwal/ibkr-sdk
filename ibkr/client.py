@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from ibkr.auth import AuthHandler
 from ibkr.exceptions import IBKRAPIError
 from ibkr.models.account import AccountAttributes, AccountSummaryResponse
@@ -95,8 +97,8 @@ class ScannerAPI:
         data = self.client._get("/v1/api/iserver/scanner/params")
         return IserverScannerParams(**data)
 
-    def run(self, scannerRequest: dict) -> list[IserverScannerRunResponse]:
-        data = self.client._post("/v1/api/iserver/scanner/run", json=scannerRequest)
+    def run(self, scanner_request: dict) -> list[IserverScannerRunResponse]:
+        data = self.client._post("/v1/api/iserver/scanner/run", json=scanner_request)
         return [IserverScannerRunResponse(**r) for r in data]
 
 
@@ -187,12 +189,12 @@ class IBKRClient:
 
     def _get(self, path: str, params: dict | None = None) -> dict:
         response = self.auth.session.get(f"{self.base_url}{path}", params=params)
-        if response.status_code == 200:
+        if response.status_code == HTTPStatus.OK:
             return response.json()
         raise IBKRAPIError(response.status_code, "GET failed", response.text)
 
     def _post(self, path: str, json: dict | None = None) -> dict:
         response = self.auth.session.post(f"{self.base_url}{path}", json=json)
-        if response.status_code == 200:
+        if response.status_code == HTTPStatus.OK:
             return response.json()
         raise IBKRAPIError(response.status_code, "POST failed", response.text)

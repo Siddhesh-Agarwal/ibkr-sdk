@@ -24,7 +24,9 @@ class Order(BaseModel):
     order_desc: str | None = Field(default=None, alias="orderDesc")
     order_id: int | None = Field(default=None, alias="orderId")
     order_type: str | None = Field(default=None, alias="orderType")
-    order_cancellation_by_system_reason: str | None = Field(default=None, alias="orderCancellationBySystemReason")
+    order_cancellation_by_system_reason: str | None = Field(
+        default=None, alias="orderCancellationBySystemReason"
+    )
     order_ccp_status: str | None = Field(default=None, alias="orderCcpStatus")
     orig_order_type: str | None = Field(default=None, alias="origOrderType")
     price: str | None = Field(default=None, alias="price")

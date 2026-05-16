@@ -17,9 +17,13 @@ class ContractInfo(BaseModel):
     trading_class: str | None = Field(default=None, alias="tradingClass")
     valid_exchanges: str | None = Field(default=None, alias="validExchanges")
     allow_sell_long: bool | None = Field(default=None, alias="allowSellLong")
-    is_zero_commission_security: bool | None = Field(default=None, alias="isZeroCommissionSecurity")
+    is_zero_commission_security: bool | None = Field(
+        default=None, alias="isZeroCommissionSecurity"
+    )
     local_symbol: str | None = Field(default=None, alias="localSymbol")
-    contract_clarification_type: str | None = Field(default=None, alias="contractClarificationType")
+    contract_clarification_type: str | None = Field(
+        default=None, alias="contractClarificationType"
+    )
     classifier: str | None = Field(default=None, alias="classifier")
     currency: str | None = Field(default=None, alias="currency")
     text: str | None = Field(default=None, alias="text")
@@ -70,7 +74,9 @@ class ContractRules(BaseModel):
     force_order_preview: bool | None = Field(default=None, alias="forceOrderPreview")
     cqt_types: list[str] = Field(default_factory=list, alias="cqtTypes")
     order_defaults: OrderDefaults | None = Field(default=None, alias="orderDefaults")
-    order_types_outside: list[str] = Field(default_factory=list, alias="orderTypesOutside")
+    order_types_outside: list[str] = Field(
+        default_factory=list, alias="orderTypesOutside"
+    )
     default_size: int | None = Field(default=None, alias="defaultSize")
     cash_size: int | None = Field(default=None, alias="cashSize")
     size_increment: int | None = Field(default=None, alias="sizeIncrement")
@@ -87,7 +93,9 @@ class ContractRules(BaseModel):
     price_magnifier: int | None = Field(default=None, alias="priceMagnifier")
     negative_capable: bool | None = Field(default=None, alias="negativeCapable")
     increment_type: int | None = Field(default=None, alias="incrementType")
-    increment_rules: list[IncrementRule] = Field(default_factory=list, alias="incrementRules")
+    increment_rules: list[IncrementRule] = Field(
+        default_factory=list, alias="incrementRules"
+    )
     has_secondary: bool | None = Field(default=None, alias="hasSecondary")
     mod_types: list[str] = Field(default_factory=list, alias="modTypes")
     increment: float | None = Field(default=None, alias="increment")
@@ -145,7 +153,9 @@ class DisplayRuleItem(BaseModel):
     model_config = {"populate_by_name": True}
 
     magnification: int | None = Field(default=None, alias="magnification")
-    display_rule_step: list[DisplayRuleStepItem] = Field(default_factory=list, alias="displayRuleStep")
+    display_rule_step: list[DisplayRuleStepItem] = Field(
+        default_factory=list, alias="displayRuleStep"
+    )
 
 
 class Secdef(BaseModel):
@@ -174,8 +184,12 @@ class Secdef(BaseModel):
     has_options: bool | None = Field(default=None, alias="hasOptions")
     full_name: str | None = Field(default=None, alias="fullName")
     is_us: bool | None = Field(default=None, alias="isUS")
-    increment_rules: list[IncrementRulesItem] = Field(default_factory=list, alias="incrementRules")
-    display_rule: list[DisplayRuleItem] = Field(default_factory=list, alias="displayRule")
+    increment_rules: list[IncrementRulesItem] = Field(
+        default_factory=list, alias="incrementRules"
+    )
+    display_rule: list[DisplayRuleItem] = Field(
+        default_factory=list, alias="displayRule"
+    )
     is_event_contract: bool | None = Field(default=None, alias="isEventContract")
     page_size: int | None = Field(default=None, alias="pageSize")
 
@@ -196,7 +210,7 @@ class EligibleContractParticipantDetails(BaseModel):
 class EligibleContractParticipant(BaseModel):
     model_config = {"populate_by_name": True}
 
-    eligible_contract_participant_details: list[EligibleContractParticipantDetails] = Field(
-        default_factory=list, alias="eligibleContractParticipantDetails"
+    eligible_contract_participant_details: list[EligibleContractParticipantDetails] = (
+        Field(default_factory=list, alias="eligibleContractParticipantDetails")
     )
     status: bool | None = Field(default=None, alias="status")
