@@ -57,7 +57,7 @@ class OrdersAPI:
         data = self.client._get(
             f"/v1/api/iserver/account/{account_id}/order/{order_id}"
         )
-        return OrderDetail.model_validate(data)
+        return OrderDetail.model_validate_json(data)
 
 
 class MarketDataAPI:
@@ -123,11 +123,11 @@ class FAAPI:
 
     def account_details(self) -> FAModelAccountsDetails:
         data = self.client._get("/v1/api/fa/model/accounts-details")
-        return FAModelAccountsDetails.model_validate(data)
+        return FAModelAccountsDetails.model_validate_json(data)
 
     def positions(self, model: str) -> ModelPositionResponse:
         data = self.client._get("/v1/api/fa/model/positions", params={"model": model})
-        return ModelPositionResponse.model_validate(data)
+        return ModelPositionResponse.model_validate_json(data)
 
 
 class FYIAPI:
