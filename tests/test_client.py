@@ -103,12 +103,20 @@ class TestPortfolioAPI:
         responses.add(
             responses.GET,
             "https://api.ibkr.com/v1/api/portfolio/DU123456/ledger",
-            json={"cash": {"USD": 10000}, "netLiquidationValue": 50000},
+            json={
+                "USD": {
+                    "acctcode": "DU123456",
+                    "netliquidationvalue": 50000,
+                    "cashbalance": 10000,
+                    "currency": "USD",
+                    "key": "LedgerList",
+                }
+            },
             status=HTTPStatus.OK,
         )
         client = IBKRClient()
         ledger = client.portfolio.ledger("DU123456")
-        assert ledger["netLiquidationValue"] == 50000
+        assert ledger.entries["USD"].netliquidationvalue == 50000
 
     @responses.activate
     def test_summary(self):
@@ -183,7 +191,8 @@ class TestOrdersAPI:
         )
         client = IBKRClient()
         order = client.orders.get_order("DU123456", "12345")
-        assert order["orderId"] == 12345
+        assert order.order_id == 12345
+        assert order.status == "Filled"
 
 
 class TestMarketDataAPI:

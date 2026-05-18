@@ -25,3 +25,15 @@ class FyiVT(BaseModel):
 
     v: int | None = Field(default=None, alias="v")
     t: int | None = Field(default=None, alias="t")
+
+
+class NotificationItem(BaseModel):
+    model_config = {"populate_by_name": True}
+
+    r: str | None = Field(default=None, alias="R")
+    d: str | None = Field(default=None, alias="D")
+    ms: str | None = Field(default=None, alias="MS")
+    md: str | None = Field(default=None, alias="MD")
+    id: str | None = Field(default=None, alias="ID")
+    ht: int | None = Field(default=None, alias="HT")
+    fc: str | None = Field(default=None, alias="FC")

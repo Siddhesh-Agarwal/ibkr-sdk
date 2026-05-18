@@ -1,6 +1,9 @@
 from ibkr.models.account import AccountAttributes, AccountSummaryResponse
+from ibkr.models.fa import FAModelAccountsDetails, ModelPositionResponse
+from ibkr.models.fyi import NotificationItem
+from ibkr.models.ledger import LedgerEntry, LedgerResponse
 from ibkr.models.marketdata import IserverSnapshot
-from ibkr.models.orders import LiveOrdersResponse, Order
+from ibkr.models.orders import LiveOrdersResponse, Order, OrderDetail
 from ibkr.models.portfolio import IndividualPosition
 
 
@@ -65,7 +68,7 @@ class TestIndividualPosition:
             "undConid": None,
             "unrealizedPnl": 475.0,
         }
-        pos = IndividualPosition(**position_example)
+        pos = IndividualPosition.model_validate(position_example)
         assert pos.conid == 123456
         assert pos.ticker == "AAPL"
         assert pos.position == 100.0
@@ -118,7 +121,7 @@ class TestLiveOrdersResponse:
             ],
             "snapshot": True,
         }
-        response = LiveOrdersResponse(**orders_example)
+        response = LiveOrdersResponse.model_validate(orders_example)
         assert len(response.orders) == 1
         assert response.orders[0].ticker == "AAPL"
         assert response.orders[0].order_id == 12345
@@ -142,7 +145,7 @@ class TestOrder:
             "status": "Filled",
             "ticker": "AAPL",
         }
-        order = Order(**order_data)
+        order = Order.model_validate(order_data)
         assert order.conid == "123456"
         assert order.order_type == "LMT"
         assert order.price == "150.00"
@@ -157,7 +160,7 @@ class TestOrder:
             "timeInForce": "GTC",
             "totalSize": "100",
         }
-        order = Order(**order_data)
+        order = Order.model_validate(order_data)
         assert order.filled_quantity == "50"
         assert order.time_in_force == "GTC"
 
@@ -178,7 +181,7 @@ class TestIserverSnapshot:
                 "34": "155.50",
             },
         }
-        snapshot = IserverSnapshot(**snapshot_data)
+        snapshot = IserverSnapshot.model_validate(snapshot_data)
         assert snapshot.conid == 123456
         assert snapshot.server_id == "12345"
 
@@ -211,7 +214,7 @@ class TestAccountSummaryResponse:
                 {"currency": "EUR", "balance": 20000, "settledCash": 20000},
             ],
         }
-        summary = AccountSummaryResponse(**summary_data)
+        summary = AccountSummaryResponse.model_validate(summary_data)
         assert summary.account_type == "CASH"
         assert len(summary.cash_balances) == 2
         assert summary.cash_balances[0].currency == "USD"
@@ -219,3 +222,125 @@ class TestAccountSummaryResponse:
     def test_account_summary_minimal(self):
         summary = AccountSummaryResponse()
         assert summary.cash_balances == []
+
+
+class TestLedgerEntry:
+    def test_ledger_entry_model_validate(self):
+        data = {
+            "acctcode": "DU123456",
+            "cashbalance": 1000.0,
+            "commoditymarketvalue": 500.0,
+            "currency": "USD",
+            "key": "LedgerList",
+            "netliquidationvalue": 50000.0,
+            "realizedpnl": 100.0,
+            "stockmarketvalue": 10000.0,
+            "unrealizedpnl": 500.0,
+        }
+        entry = LedgerEntry.model_validate(data)
+        assert entry.acctcode == "DU123456"
+        assert entry.currency == "USD"
+
+
+class TestLedgerResponse:
+    def test_ledger_response_dict_parsing(self):
+        data = {
+            "USD": {
+                "acctcode": "DU123456",
+                "cashbalance": 1000.0,
+                "currency": "USD",
+                "key": "LedgerList",
+                "netliquidationvalue": 50000.0,
+            }
+        }
+        resp = LedgerResponse.model_validate(data)
+        assert "USD" in resp.entries
+
+
+class TestOrderDetail:
+    def test_order_detail_model_validate(self):
+        data = {
+            "acct": "U1234567",
+            "exchange": "IDEALPRO",
+            "conidex": "15016138@IDEALPRO",
+            "conid": 15016138,
+            "account": "DU4355398",
+            "orderId": 1370093238,
+            "status": "Filled",
+        }
+        order = OrderDetail.model_validate(data)
+        assert order.acct == "U1234567"
+        assert order.conid == 15016138
+
+
+class TestFAModelAccountsDetails:
+    def test_fa_model_accounts_details(self):
+        data = {
+            "accountInfoList": [
+                {
+                    "account": "DUN884097",
+                    "accountImbalance": "0.904036",
+                    "alias": "",
+                    "baseCcyAccount": "USD",
+                    "costBasis": "0",
+                    "exchangeRate": 1.0,
+                    "nlv": "0",
+                    "numInstrumentsOutsideRange": 2,
+                    "unrealizedPnL": "0",
+                }
+            ],
+            "baseCcyMaster": "USD",
+            "model": "MCPAPI01",
+            "reqID": 131,
+        }
+        result = FAModelAccountsDetails.model_validate(data)
+        assert result.model == "MCPAPI01"
+        assert len(result.account_info_list) == 1
+
+
+class TestModelPositionResponse:
+    def test_model_position_response(self):
+        data = {
+            "cash": [
+                {"actual": 0, "ccy": "USD", "exchangeRate": 1, "mv": 0, "target": 0.096}
+            ],
+            "mismatched": False,
+            "model": "MCPAPI01",
+            "nlv": 0.0,
+            "positionList": [
+                {
+                    "actual": "0",
+                    "ccy": "USD",
+                    "conid": 268084,
+                    "instrument": "CSCO",
+                    "mv": "0",
+                    "position": "0",
+                    "target": "0.432",
+                }
+            ],
+            "positionTs": 1769614805464,
+            "reqID": 540607,
+            "stkOnly": True,
+            "subscriptionStatus": 1,
+            "totalDlv": 0.0,
+            "totalMv": 0.0,
+        }
+        result = ModelPositionResponse.model_validate(data)
+        assert result.model == "MCPAPI01"
+        assert len(result.position_list) == 1
+
+
+class TestNotificationItem:
+    def test_notification_item(self):
+        data = {
+            "R": "0",
+            "D": "1710847062.0",
+            "MS": "FYI: Changes in Analyst Ratings",
+            "MD": "<html>Notification content</html>",
+            "ID": "2024031947509444",
+            "HT": 0,
+            "FC": "PF",
+        }
+        item = NotificationItem.model_validate(data)
+        assert item.ms == "FYI: Changes in Analyst Ratings"
+        assert item.id == "2024031947509444"
