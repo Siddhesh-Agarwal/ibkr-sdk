@@ -8,18 +8,28 @@ class LedgerEntry(BaseModel):
 
     acctcode: str | None = Field(default=None, alias="acctcode")
     cashbalance: float | None = Field(default=None, alias="cashbalance")
-    cashbalancefxsegment: float | None = Field(default=None, alias="cashbalancefxsegment")
-    commoditymarketvalue: float | None = Field(default=None, alias="commoditymarketvalue")
-    corporatebondsmarketvalue: float | None = Field(default=None, alias="corporatebondsmarketvalue")
+    cashbalancefxsegment: float | None = Field(
+        default=None, alias="cashbalancefxsegment"
+    )
+    commoditymarketvalue: float | None = Field(
+        default=None, alias="commoditymarketvalue"
+    )
+    corporatebondsmarketvalue: float | None = Field(
+        default=None, alias="corporatebondsmarketvalue"
+    )
     currency: str | None = Field(default=None, alias="currency")
     dividends: float | None = Field(default=None, alias="dividends")
     exchangerate: int | None = Field(default=None, alias="exchangerate")
     funds: float | None = Field(default=None, alias="funds")
     futuremarketvalue: float | None = Field(default=None, alias="futuremarketvalue")
-    futureoptionmarketvalue: float | None = Field(default=None, alias="futureoptionmarketvalue")
+    futureoptionmarketvalue: float | None = Field(
+        default=None, alias="futureoptionmarketvalue"
+    )
     futuresonlypnl: float | None = Field(default=None, alias="futuresonlypnl")
     interest: float | None = Field(default=None, alias="interest")
-    issueroptionsmarketvalue: float | None = Field(default=None, alias="issueroptionsmarketvalue")
+    issueroptionsmarketvalue: float | None = Field(
+        default=None, alias="issueroptionsmarketvalue"
+    )
     key: str | None = Field(default=None, alias="key")
     moneyfunds: float | None = Field(default=None, alias="moneyfunds")
     netliquidationvalue: float | None = Field(default=None, alias="netliquidationvalue")
@@ -29,7 +39,9 @@ class LedgerEntry(BaseModel):
     settledcash: float | None = Field(default=None, alias="settledcash")
     severity: int | None = Field(default=None, alias="severity")
     stockmarketvalue: float | None = Field(default=None, alias="stockmarketvalue")
-    stockoptionmarketvalue: float | None = Field(default=None, alias="stockoptionmarketvalue")
+    stockoptionmarketvalue: float | None = Field(
+        default=None, alias="stockoptionmarketvalue"
+    )
     tbillsmarketvalue: float | None = Field(default=None, alias="tbillsmarketvalue")
     tbondsmarketvalue: float | None = Field(default=None, alias="tbondsmarketvalue")
     timestamp: int | None = Field(default=None, alias="timestamp")

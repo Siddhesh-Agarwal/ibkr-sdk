@@ -139,7 +139,9 @@ class OrderDetail(BaseModel):
     last_side: str | None = Field(default=None, alias="lastSide")
     layer: str | None = Field(default=None, alias="layer")
     leg_total_qty: str | None = Field(default=None, alias="legTotalQty")
-    level_of_no_open_orders: str | None = Field(default=None, alias="levelOfNoOpenOrders")
+    level_of_no_open_orders: str | None = Field(
+        default=None, alias="levelOfNoOpenOrders"
+    )
     listing_exchange: str | None = Field(default=None, alias="listingExchange")
     loc_amt: str | None = Field(default=None, alias="locAmt")
     loc_borrow: str | None = Field(default=None, alias="locBorrow")

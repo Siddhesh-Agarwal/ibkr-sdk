@@ -18,14 +18,18 @@ class AccountInfoItem(BaseModel):
     cost_basis: str | None = Field(default=None, alias="costBasis")
     exchange_rate: float | None = Field(default=None, alias="exchangeRate")
     nlv: str | None = Field(default=None, alias="nlv")
-    num_instruments_outside_range: int | None = Field(default=None, alias="numInstrumentsOutsideRange")
+    num_instruments_outside_range: int | None = Field(
+        default=None, alias="numInstrumentsOutsideRange"
+    )
     unrealized_pnl: str | None = Field(default=None, alias="unrealizedPnL")
 
 
 class FAModelAccountsDetails(BaseModel):
     model_config = {"populate_by_name": True}
 
-    account_info_list: list[AccountInfoItem] = Field(default_factory=list, alias="accountInfoList")
+    account_info_list: list[AccountInfoItem] = Field(
+        default_factory=list, alias="accountInfoList"
+    )
     base_ccy_master: str | None = Field(default=None, alias="baseCcyMaster")
     model: str | None = Field(default=None, alias="model")
     req_id: int | None = Field(default=None, alias="reqID")
@@ -37,7 +41,9 @@ class CashItem(BaseModel):
     actual: float | None = Field(default=None, alias="actual")
     ccy: str | None = Field(default=None, alias="ccy")
     exchange_rate: float | None = Field(default=None, alias="exchangeRate")
-    instrument_imbalance: float | None = Field(default=None, alias="instrumentImbalance")
+    instrument_imbalance: float | None = Field(
+        default=None, alias="instrumentImbalance"
+    )
     mv: float | None = Field(default=None, alias="mv")
     target: float | None = Field(default=None, alias="target")
 
@@ -54,7 +60,9 @@ class PositionListItem(BaseModel):
     exchange_rate: float | None = Field(default=None, alias="exchangeRate")
     flags: str | None = Field(default=None, alias="flags")
     instrument: str | None = Field(default=None, alias="instrument")
-    instrument_imbalance: float | None = Field(default=None, alias="instrumentImbalance")
+    instrument_imbalance: float | None = Field(
+        default=None, alias="instrumentImbalance"
+    )
     mismatch_type: str | None = Field(default=None, alias="mismatchType")
     mv: str | None = Field(default=None, alias="mv")
     position: str | None = Field(default=None, alias="position")
@@ -68,7 +76,9 @@ class ModelPositionResponse(BaseModel):
     mismatched: bool | None = Field(default=None, alias="mismatched")
     model: str | None = Field(default=None, alias="model")
     nlv: float | None = Field(default=None, alias="nlv")
-    position_list: list[PositionListItem] = Field(default_factory=list, alias="positionList")
+    position_list: list[PositionListItem] = Field(
+        default_factory=list, alias="positionList"
+    )
     position_ts: int | None = Field(default=None, alias="positionTs")
     req_id: int | None = Field(default=None, alias="reqID")
     stk_only: bool | None = Field(default=None, alias="stkOnly")
