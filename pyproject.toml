@@ -1,13 +1,41 @@
 [project]
 name = "ibkr-sdk"
 version = "0.1.0"
-description = "Add your description here"
+description = "A Python SDK for interacting with Interactive Brokers API"
+license = "MIT"
 readme = "README.md"
 requires-python = ">=3.11"
+authors = [
+    { name = "Siddhesh Agarwal", email = "siddhesh.agarwal@gmail.com" },
+]
 dependencies = [
     "pydantic>=2.13.4",
     "requests>=2.34.2",
 ]
+keywords = ["ibkr", "interactive brokers", "api", "sdk"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Pydantic",
+    "Framework :: Pydantic :: 2",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Typing :: Typed",
+]
+
+[project.urls]
+homepage = "https://python-poetry.org/"
+repository = "https://github.com/Siddhesh-Agarwal/ibkr-sdk"
+documentation = "https://github.com/Siddhesh-Agarwal/ibkr-sdk/wiki"
+"Bug Tracker" = "https://github.com/Siddhesh-Agarwal/ibkr-sdk/issues"
 
 [dependency-groups]
 dev = [

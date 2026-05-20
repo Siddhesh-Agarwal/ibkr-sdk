@@ -1,6 +1,6 @@
 # IBKR SDK
 
-Python SDK for Interactive Brokers REST API.
+A Python SDK for interacting with Interactive Brokers API.
 
 ## Installation
 
