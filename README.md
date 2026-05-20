@@ -5,9 +5,9 @@ A Python SDK for interacting with Interactive Brokers API.
 ## Installation
 
 ### From PyPI
-
-> [!WARNING]
-> The package is not yet published on PyPI. Use the GitHub installation method instead.
+```bash
+pip install ibkr-sdk
+```
 
 ### From GitHub
 ```bash
