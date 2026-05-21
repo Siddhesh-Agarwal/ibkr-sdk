@@ -31,13 +31,16 @@ classifiers = [
 ]
 
 [project.urls]
-homepage = "https://python-poetry.org/"
+homepage = "https://github.com/Siddhesh-Agarwal/ibkr-sdk"
 repository = "https://github.com/Siddhesh-Agarwal/ibkr-sdk"
 documentation = "https://github.com/Siddhesh-Agarwal/ibkr-sdk/wiki"
 "Bug Tracker" = "https://github.com/Siddhesh-Agarwal/ibkr-sdk/issues"
 
 [dependency-groups]
 dev = [
+    "pre-commit>=4.6.0",
+    "pytest>=9.0.3",
+    "responses>=0.26.0",
     "ruff>=0.15.13",
     "ty>=0.0.37",
 ]
@@ -88,7 +91,7 @@ select = [
     "UP",
     "RUF",
 ]
-ignore = []
+ignore = ["PLR2004"]
 fixable = ["ALL"]
 
 [tool.ruff.format]

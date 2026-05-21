@@ -67,7 +67,7 @@ class MarketDataAPI:
     def snapshot(
         self, conids: list[int], fields: list[str] | None = None
     ) -> list[IserverSnapshot]:
-        payload = {"conids": conids}
+        payload: dict[str, list[int] | list[str]] = {"conids": conids}
         if fields:
             payload["fields"] = fields
         data = self.client._post("/v1/api/iserver/marketdata/snapshot", json=payload)

@@ -1,0 +1,23 @@
+repos:
+  - repo: local
+    hooks:
+      - id: uv-sync
+        name: uv sync
+        entry: uv sync
+        language: system
+        pass_filenames: false
+        types: [python]
+
+      - id: type-check
+        name: type check
+        entry: uv run ty check
+        language: system
+        pass_filenames: false
+        types: [python]
+
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check
+        language: system
+        pass_filenames: false
+        types: [python]
