@@ -1,6 +1,6 @@
 # IBKR SDK
 
-A Python SDK for interacting with Interactive Brokers API.
+A Python SDK for interacting with [Interactive Brokers Web API](https://ibkrcampus.com/campus/ibkr-api-page/web-api/).
 
 ## Installation
 
