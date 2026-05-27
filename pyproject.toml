@@ -1,6 +1,6 @@
 [project]
 name = "ibkr-sdk"
-version = "0.1.2"
+version = "0.1.3"
 description = "A Python SDK for interacting with Interactive Brokers API"
 license = "MIT"
 readme = "README.md"
