@@ -13,7 +13,7 @@ pip install ibkr-sdk
 
 ### From GitHub
 ```bash
-pip install git+https://github.com/Siddhesh-Agarwal/ibkr-sdk
+pip install git+https://github.com/Siddhesh-Agarwal/ibkr-sdk.git
 ```
 
 ## Quick Start
