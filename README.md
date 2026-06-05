@@ -2,6 +2,8 @@
 
 A Python SDK for interacting with [Interactive Brokers Web API](https://ibkrcampus.com/campus/ibkr-api-page/web-api/).
 
+[![PyPI Downloads](https://static.pepy.tech/personalized-badge/ibkr-sdk?period=total&units=INTERNATIONAL_SYSTEM&left_text=downloads)](https://pepy.tech/projects/ibkr-sdk)
+
 ## Installation
 
 ### From PyPI
