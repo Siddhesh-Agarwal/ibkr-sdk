@@ -7,13 +7,9 @@ A Python SDK for interacting with [Interactive Brokers Web API](https://ibkrcamp
 ## Installation
 
 ### From PyPI
+
 ```bash
 pip install ibkr-sdk
-```
-
-### From GitHub
-```bash
-pip install git+https://github.com/Siddhesh-Agarwal/ibkr-sdk.git
 ```
 
 ## Quick Start
@@ -62,15 +58,15 @@ ibkr/
 
 ## API Classes
 
-| Class | Description |
-|-------|-------------|
-| `client.portfolio` | Account info, positions, ledger, summary |
-| `client.orders` | Open orders, order status |
-| `client.marketdata` | Snapshot, historical data |
-| `client.contract` | Contract search, info |
-| `client.scanner` | Scanner parameters, run |
-| `client.fa` | Financial advisor endpoints |
-| `client.fyi` | Notifications, settings |
+| Class               | Description                              |
+| ------------------- | ---------------------------------------- |
+| `client.portfolio`  | Account info, positions, ledger, summary |
+| `client.orders`     | Open orders, order status                |
+| `client.marketdata` | Snapshot, historical data                |
+| `client.contract`   | Contract search, info                    |
+| `client.scanner`    | Scanner parameters, run                  |
+| `client.fa`         | Financial advisor endpoints              |
+| `client.fyi`        | Notifications, settings                  |
 
 ## Authentication
 
@@ -99,12 +95,12 @@ print(acct.account_id)  # "DU123"
 
 ## Exceptions
 
-| Exception | Description |
-|-----------|-------------|
-| `IBKRError` | Base exception |
-| `IBKRAPIError` | API error response |
+| Exception             | Description           |
+| --------------------- | --------------------- |
+| `IBKRError`           | Base exception        |
+| `IBKRAPIError`        | API error response    |
 | `IBKRValidationError` | JSON/validation error |
-| `IBKRConnectionError` | Network error |
+| `IBKRConnectionError` | Network error         |
 
 ## Development
 
