@@ -1,8 +1,0 @@
-name: pypi-publish
-on: release
-jobs:
-  publish_to_pypi:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pypa/gh-action-pypi-publish@v1.14.0
