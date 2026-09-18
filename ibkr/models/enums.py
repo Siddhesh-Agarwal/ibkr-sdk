@@ -1,0 +1,340 @@
+from enum import StrEnum
+
+
+class InvestiveObjectiveEnum(StrEnum):
+    TRADING = "Trading"
+    GROWTH = "Growth"
+    SPECULATION = "Speculation"
+    HEDGING = "Hedging"
+    PRESERVATION = "Preservation"
+    INCOME = "Income"
+
+
+class BrokerageServiceCodeEnum(StrEnum):
+    IBCLEARING = "IBClearing"
+    IBEXECUTION = "IBExecution"
+    IBPRIME = "IBPrime"
+
+
+class CapabilityEnum(StrEnum):
+    BOND = "BOND"
+    FOP = "FOP"
+    FUND = "FUND"
+    FUT = "FUT"
+    MRGN = "MRGN"
+    MULT = "MULT"
+    OPT = "OPT"
+    SSF = "SSF"
+    CFD = "CFD"
+    STK = "STK"
+    CLP = "CLP"
+    LEVFX = "LEVFX"
+    CMDTY = "CMDTY"
+
+
+class BaseCurrencyEnum(StrEnum):
+    USD = "USD"
+    EUR = "EUR"
+    GBP = "GBP"
+    CAD = "CAD"
+    JPY = "JPY"
+    HKD = "HKD"
+    AUD = "AUD"
+    CHF = "CHF"
+    MXN = "MXN"
+    SEK = "SEK"
+    NZD = "NZD"
+    HUF = "HUF"
+    CZK = "CZK"
+    CNH = "CNH"
+    DKK = "DKK"
+    RUB = "RUB"
+    ILS = "ILS"
+    NOK = "NOK"
+    SGD = "SGD"
+    PLN = "PLN"
+    ZAR = "ZAR"
+    AED = "AED"
+    KRW = "KRW"
+    SAR = "SAR"
+    TRY = "TRY"
+    RON = "RON"
+    BGN = "BGN"
+
+
+class IRATypeEnum(StrEnum):
+    RI = "RI"
+    RO = "RO"
+    RT = "RT"
+    SP = "SP"
+    ED = "ED"
+    TH = "TH"
+    RH = "RH"
+    SH = "SH"
+    RRSP = "RRSP"
+    SRRSP = "SRRSP"
+    TFSA = "TFSA"
+    SIMPLE = "SIMPLE"
+    ISA = "ISA"
+    JISA = "JISA"
+
+
+class AccountTypeEnum(StrEnum):
+    INVESTMENT = "Investment"
+    TRADING = "Trading"
+    SMSF = "SMSF"
+
+
+class QISubTypeEnum(StrEnum):
+    ISA = "ISA"
+    JISA = "JISA"
+    SIPP = "SIPP"
+
+
+class AssetClassEnum(StrEnum):
+    BILL = "BILL"
+    BOND = "BOND"
+    CASH = "CASH"
+    CFD = "CFD"
+    COMB = "COMB"
+    FOP = "FOP"
+    FUND = "FUND"
+    FUT = "FUT"
+    OPT = "OPT"
+    SSF = "SSF"
+    STK = "STK"
+    WAR = "WAR"
+    MRGN = "MRGN"
+    CLP = "CLP"
+
+
+class CountryEnum(StrEnum):
+    ALL = "ALL"
+    AUSTRALIA = "AUSTRALIA"
+    AUSTRIA = "AUSTRIA"
+    BELGIUM = "BELGIUM"
+    CANADA = "CANADA"
+    FRANCE = "FRANCE"
+    GERMANY = "GERMANY"
+    HONG_KONG = "HONG KONG"
+    ITALY = "ITALY"
+    JAPAN = "JAPAN"
+    KOREA = "KOREA"
+    MEXICO = "MEXICO"
+    NORWAY = "NORWAY"
+    SINGAPORE = "SINGAPORE"
+    SPAIN = "SPAIN"
+    SWEDEN = "SWEDEN"
+    SWITZERLAND = "SWITZERLAND"
+    THE_NETHERLANDS = "THE NETHERLANDS"
+    UNITED_KINGDOM = "UNITED KINGDOM"
+    UNITED_STATES = "UNITED STATES"
+    HK_CHINA = "HK-CHINA"
+
+
+class ProductTypeEnum(StrEnum):
+    BONDS = "BONDS"
+    FUTURES = "FUTURES"
+    FOREX = "FOREX"
+    FUTURES_OPTIONS = "FUTURES OPTIONS"
+    MUTUAL_FUNDS = "MUTUAL FUNDS"
+    STOCKS = "STOCKS"
+    SINGLE_STOCK_FUTURES = "SINGLE STOCK FUTURES"
+    OPTIONS = "OPTIONS"
+    STOCK_OPTIONS = "STOCK OPTIONS"
+    WARRANTS = "WARRANTS"
+
+
+class ExchangeEnum(StrEnum):
+    NYSE = "NYSE"
+    AMEX = "AMEX"
+    NASDAQ = "NASDAQ"
+    CBOE = "CBOE"
+    ISE = "ISE"
+    BOX = "BOX"
+    PHLX = "PHLX"
+    PSE = "PSE"
+
+
+class SalutationEnum(StrEnum):
+    MR = "Mr."
+    MRS = "Mrs."
+    MS = "Ms."
+    DR = "Dr."
+    MX = "Mx."
+    IND = "Ind."
+
+
+class NameSuffixEnum(StrEnum):
+    JR = "Jr."
+    SR = "Sr."
+    I = "I"  # noqa: E741
+    II = "II"
+    III = "III"
+    IV = "IV"
+    V = "V"
+
+
+class GenderEnum(StrEnum):
+    MALE = "M"
+    FEMALE = "F"
+
+
+class MaritalStatusEnum(StrEnum):
+    SINGLE = "S"
+    MARRIED = "M"
+    WIDOWED = "W"
+    DIVORCED = "D"
+    CIVIL_PARTNERSHIP = "C"
+
+
+class PhoneTypeEnum(StrEnum):
+    WORK = "Work"
+    HOME = "Home"
+    FAX = "Fax"
+    MOBILE = "Mobile"
+    MOBILE_WORK = "Mobile (work)"
+    MOBILE_OTHER = "Mobile (other)"
+    BUSINESS = "Business"
+    OTHER_VOICE = "Other (voice)"
+
+
+class TINTypeEnum(StrEnum):
+    SSN = "SSN"
+    EIN = "EIN"
+    NON_US_NATIONAL_ID = "NonUS_NationalId"
+
+
+class FormationTypeEnum(StrEnum):
+    PUBLIC = "PUBLIC"
+    PRIVATE = "PRIVATE"
+    OTHER = "OTHER"
+
+
+class CardColorEnum(StrEnum):
+    BLUE = "BLUE"
+    GREEN = "GREEN"
+    YELLOW = "YELLOW"
+
+
+class SignatureTypeEnum(StrEnum):
+    ELECTRONIC = "Electronic"
+    PHYSICAL = "Physical"
+
+
+class CustomerTypeEnum(StrEnum):
+    INDIVIDUAL = "Individual"
+    CORPORATION = "Corporation"
+    PARTNERSHIP = "Partnership"
+    LLC = "LLC"
+    OTHER = "Other"
+
+
+class TaxAuthorityEnum(StrEnum):
+    ISRAEL = "ISRAEL_TA"
+    CANADA = "CANADA_TA"
+    RUSSIA = "RUSSIA_TA"
+    SWEDEN = "SWEDEN_TA"
+    AUSTRALIA = "AUSTRALIA_TA"
+
+
+class ExplanationTypeEnum(StrEnum):
+    US_TIN = "US_TIN"
+    TIN_NOT_DISCLOSED = "TIN_NOT_DISCLOSED"
+    TIN_NOT_REQUIRED = "TIN_NOT_REQUIRED"
+    TIN_NOT_ISSUED = "TIN_NOT_ISSUED"
+
+
+class ControllingPersonDesignationEnum(StrEnum):
+    SENIOR_MGMT_OFFICER = "SENIOR_MGMT_OFFICER"
+    BY_OWNERSHIP = "BY_OWNERSHIP"
+    BY_OTHER_MEANS = "BY_OTHER_MEANS"
+
+
+class OECDStatusEnum(StrEnum):
+    DEPOSITORY_INSTITUTION = "DEPOSITORY_INSTITUTION"
+    CUSTODIAL_INSTITUTION = "CUSTODIAL_INSTITUTION"
+    SPECIFIED_INSURANCE_COMPANY = "SPECIFIED_INSURANCE_COMPANY"
+    INVESTMENT_ENTITY_IN_NONPARTICIPATING_JURISDICTION = (
+        "INVESTMENT_ENTITY_IN_NONPARTICIPATING_JURISDICTION"
+    )
+    INVESTMENT_ENTITY_NOT_LISTED = "INVESTMENT_ENTITY_NOT_LISTED"
+    PUBLICLY_TRADED_CORPORATION_OR_AFFILIATE = (
+        "PUBLICLY_TRADED_CORPORATION_OR_AFFILIATE"
+    )
+    OTHER_ACTIVE_NON_FINANCIAL_ENTITY = "OTHER_ACTIVE_NON_FINANCIAL_ENTITY"
+    PASSIVE_NON_FINANCIAL_ENTITY = "PASSIVE_NON_FINANCIAL_ENTITY"
+    EXEMPT_RETIREMENT_PLAN = "EXEMPT_RETIREMENT_PLAN"
+    NON_REPORTING_FI = "NON_REPORTING_FI"
+    OTHER_INVESTMENT_ENTITY = "OTHER_INVESTMENT_ENTITY"
+    FINANCIAL_INSTITUTION = "FINANCIAL_INSTITUTION"
+    NON_REPORTING_FINANCIAL_INSTITUTION = "NON_REPORTING_FINANCIAL_INSTITUTION"
+
+
+class ProhibitedQuestionnaireDetailCodeEnum(StrEnum):
+    PASSPORT = "PASSPORT"
+    CITIZENSHIP = "CITIZENSHIP"
+    BUSINESSDEALINGS = "BUSINESSDEALINGS"
+    FINANCIALACCOUNTS = "FINANCIALACCOUNTS"
+    RESIDENT = "RESIDENT"
+    MULTI = "MULTI"
+    BIRTH = "BIRTH"
+
+
+class RelationshipEnum(StrEnum):
+    BROTHER = "Brother"
+    DAUGHTER = "Daughter"
+    ESTATE = "Estate"
+    FATHER = "Father"
+    HUSBAND = "Husband"
+    MOTHER = "Mother"
+    OTHER = "Other"
+    SISTER = "Sister"
+    SON = "Son"
+    WIFE = "Wife"
+    CHARITY = "Charity"
+    TRUST = "Trust"
+    SPOUSE = "Spouse"
+    CHILD = "Child"
+    SIBLING = "Sibling"
+    PARENT = "Parent"
+    GRANDCHILD = "Grandchild"
+    COMMON_LAW_PARTNER = "Common Law Partner"
+
+
+class TitleCodeEnum(StrEnum):
+    ACCOUNT_HOLDER = "Account Holder"
+    FIRST_HOLDER = "FIRST HOLDER"
+    SECOND_HOLDER = "SECOND HOLDER"
+    TRADER = "TRADER"
+    CEO = "CEO"
+    SECRETARY = "SECRETARY"
+    TREASURER = "TREASURER"
+    OWNER = "OWNER"
+    PRINCIPAL = "PRINCIPAL"
+    SHAREHOLDER = "SHAREHOLDER"
+    TRUSTEE = "TRUSTEE"
+    BENEFICIARY = "BENEFICIARY"
+    GRANTOR = "GRANTOR"
+    EMPLOYEE = "Employee"
+    CONTINGENT = "CONTINGENT"
+    IRA_BENEFICIARY = "IRA_BENEFICIARY"
+    IRA_DECEDED = "IRA DECEDENT"
+    COMP_OFFICER = "COMP_OFFICER"
+    OTHER_OFFICER = "Other Officer"
+    CONTROLLING_OFFICER = "Controlling Officer"
+    SIGNATORY = "SIGNATORY"
+    NON_EMPLOYEE = "NON-EMPLOYEE"
+    CUSTODIAN = "CUSTODIAN"
+    SUCCESSOR_CUSTODIAN = "SUCCESSOR_CUSTODIAN"
+    DIRECTOR = "DIRECTOR"
+    PARTNER = "PARTNER"
+    CUSTODIAN_EMPLOYEE = "CUSTODIAN EMPLOYEE"
+    SUCCESSOR_CUSTODIAN_EMPLOYEE = "SUCCESSOR CUSTODIAN EMPLOYEE"
+    SPOUSE = "SPOUSE"
+    SUCCESSOR_HOLDER = "Successor Holder"
+    REGISTERED_CONTACT = "Registered Contact"
+
+
+class EntityTypeEnum(StrEnum):
+    pass

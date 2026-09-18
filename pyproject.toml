@@ -91,7 +91,7 @@ select = [
     "UP",
     "RUF",
 ]
-ignore = ["PLR2004"]
+ignore = ["PLR2004", "N815"]
 fixable = ["ALL"]
 
 [tool.ruff.format]
