@@ -12,9 +12,11 @@ from ibkr.models.enums import (
     ControllingPersonDesignationEnum,
     CountryEnum,
     CustomerTypeEnum,
+    DepositNotificationTypeEnum,
     EntityTypeEnum,
     ExchangeEnum,
     ExplanationTypeEnum,
+    FeeDetailsTypeEnum,
     FormationTypeEnum,
     GenderEnum,
     InvestiveObjectiveEnum,
@@ -168,31 +170,7 @@ class AutomatedWrapFeeDetailsType(BaseModel):
     perTradeMarkups: CommissionScheduleType
     annualBlendedPercentages: list[AnnualBlendedPercentage]
     navRanges: list[NAVRangeType]
-    type: Literal[
-        "ANNUALFLATFEE",
-        "ANNUALFLATFEE_MONTHLY",
-        "ANNUALFLATFEE_QUATERLY",
-        "PERCENTOFEQUITY",
-        "PERCENTOFEQUITY_MONTHLY",
-        "PERCENTOFEQUITY_EOM",
-        "PERCENTOFEQUITY_QUATERLY",
-        "PERCENTOFEQUITY_QUARTERLY",
-        "PERCENTOFEQUITY_EOQ",
-        "BLENDEDPERCENTOFEQUITY",
-        "BLENDEDPERCENTOFEQUITY_MONTHLY",
-        "BLENDEDPERCENTOFEQUITY_EOM",
-        "BLENDEDPERCENTOFEQUITY_QUARTERLY",
-        "BLENDEDPERCENTOFEQUITY_EOQ",
-        "INVOICE_LIMIT",
-        "INVOICE_LIMIT_Q",
-        "PERCENTOFPROFIT",
-        "PERCENTOFPROFIT_QUARTER",
-        "PERTRADE",
-        "PERCENTOFNLV_CAP",
-        "PERCENTOFNLV_CAP_EOPEQTY",
-        "PERCENTOFNLV_CAP_Q",
-        "PERCENTOFNLV_CAP_EOPEQTY_Q",
-    ]
+    type: FeeDetailsTypeEnum
     maxFee: float
     numContracts: int
     postFrequency: str
@@ -506,11 +484,55 @@ class IRAPrimaryBeneficiaryEntity(BaseModel):
 
 
 class IRAContingentBeneficiary(BaseModel):
-    pass
+    name: IndividualName
+    nativeName: IndividualName
+    birthName: IndividualName
+    motherMaidenName: IndividualName
+    dateOfBirth: str
+    countryOfBirth: str
+    cityOfBirth: str
+    gender: GenderEnum
+    maritalStatus: MaritalStatusEnum
+    numDependents: int
+    residenceAddress: ResidenceAddress
+    mailingAddress: Address
+    phones: list[PhoneInfo]
+    email: str
+    identification: Identification
+    employmentType: str
+    employmentDetails: EmploymentDetails
+    employeeTitle: str
+    taxResidencies: list[TaxResidency]
+    w9: FormW9
+    w8Ben: FormW8BEN
+    crs: FormCRS
+    prohibitedCountryQuestionnaire: ProhibitedCountryQuestionnaireList
+    id: str
+    externalId: str
+    userId: str
+    sameMailAddress: bool
+    authorizedToSignOnBehalfOfOwner: bool
+    authorizedTrader: bool
+    usTaxResident: bool
+    translated: bool
+    primaryTrustee: bool
+    ownershipPercentage: float
+    title: Title
+    relationship: RelationshipEnum
 
 
 class IRAContingentBeneficiaryEntity(BaseModel):
-    pass
+    name: str
+    address: Address
+    id: str
+    externalId: str
+    ownershipPercentage: float
+    title: Title
+    relationship: RelationshipEnum
+    executor: Individual
+    executionDate: str
+    articleOfWill: str
+    entityType: EntityTypeEnum
 
 
 class IRABeneficiariesType(BaseModel):
@@ -523,11 +545,90 @@ class IRABeneficiariesType(BaseModel):
 
 
 class IRADecedent(BaseModel):
-    pass
+    name: IndividualName
+    nativeName: IndividualName
+    birthName: IndividualName
+    motherMaidenName: IndividualName
+    dateOfBirth: str
+    countryOfBirth: str
+    cityOfBirth: str
+    gender: GenderEnum
+    maritalStatus: MaritalStatusEnum
+    numDependents: int
+    residenceAddress: ResidenceAddress
+    mailingAddress: Address
+    phones: list[PhoneInfo]
+    email: str
+    identification: Identification
+    employmentType: str
+    employmentDetails: EmploymentDetails
+    employeeTitle: str
+    taxResidencies: list[TaxResidency]
+    w9: FormW9
+    w8Ben: FormW8BEN
+    crs: FormCRS
+    prohibitedCountryQuestionnaire: ProhibitedCountryQuestionnaireList
+    id: str
+    externalId: str
+    userId: str
+    sameMailAddress: bool
+    authorizedToSignOnBehalfOfOwner: bool
+    authorizedTrader: bool
+    usTaxResident: bool
+    translated: bool
+    primaryTrustee: bool
+    dateOfDeath: str
+    title: Title
+    inheritorType: Literal["S", "I", "T", "O"]
+    relationship: RelationshipEnum
+
+
+class CheckDetails(BaseModel):
+    checkNumber: str
+    routingNumber: str
+    accountNumber: str
+
+
+class WireDetails(BaseModel):
+    bankName: str
+    bankAccountNumber: str
+    bankCode: str
+    routingNumber: str
+    instruction: str
+    countryCode: str
+    referenceNumber: str
+
+
+class IRADepositDetails(BaseModel):
+    depositType: Literal["contribution", "rollover"]
+    taxYear: Literal["current", "prior"]
+    fromIraType: Literal[
+        "RI",
+        "RO",
+        "RT",
+        "SP",
+        "ED",
+        "TH",
+        "RH",
+        "SH",
+        "RRSP",
+        "SRRSP",
+        "TFSA",
+        "SIMPLE",
+        "ISA",
+        "JISA",
+    ]
 
 
 class DepositNotification(BaseModel):
-    pass
+    checkDetails: CheckDetails
+    wireDetails: WireDetails
+    achDetails: ACHDetails
+    iraDepositDetails: IRADepositDetails
+    type: DepositNotificationTypeEnum
+    amount: float
+    currency: BaseCurrencyEnum
+    ibAccount: str
 
 
 class Account(BaseModel):
@@ -646,23 +747,88 @@ class ErrorResponse(BaseModel):
 
 
 class AssociatedPerson(BaseModel):
-    pass
+    entityId: int
+    externalCode: str
+    firstName: str
+    middleName: str
+    middleInitial: str
+    lastName: str
+    suffix: str
+    username: str
+    passwordDate: str
+    userStatus: str
+    userStatusTrading: str
+    lastLogin: str
+    gender: str
+    maritalStatus: str
+    salutation: str
+    ownershipPercentage: float
+    email: str
+    countryOfCitizenship: str
+    countryOfBirth: str
+    dateOfBirth: str
+    motersMaidenName: str
+    numberOfDependents: int
+    securityDevice: str
+    commercial: str
+    countryOfLegalResidence: str
+    stateOfLegalResidence: str
+    mdSubscriberStatus: str
+    phones: dict[Any, str]
+    residence: dict[Any, str]
+    mailing: dict[Any, str]
+    identityDocuments: list[dict[Any, str]]
+    associations: list[str]
+    employmentType: str
+    employmentDetails: dict[Any, str]
+    subscribedServices: list[dict[Any, str]]
+    taxTreatyDetails: list[dict[Any, str]]
 
 
 class AssociatedEntity(BaseModel):
-    pass
+    entityId: int
+    externalCode: str
+    name: str
+    email: str
+    organizationCountry: str
+    phones: dict[Any, str]
+    residence: dict[Any, str]
+    mailing: dict[Any, str]
+    associations: list[str]
+    identityDocuments: list[dict[Any, str]]
+    taxTreatyDetails: list[dict[Any, str]]
+    AssociatedPersons: list[AssociatedPerson]
+
+
+class AssociatedEntities(BaseModel):
+    associatedIndividuals: list[AssociatedPerson]
+    associatedEntities: list[AssociatedEntity]
 
 
 class IndividualIRABene(BaseModel):
-    pass
+    firstName: str
+    lastName: str
+    dateOfBirth: str
+    type: str
+    identification: dict[Any, str]
+    location: dict[Any, str]
+    relationship: str
+    ownership: int
+    perStripes: str
 
 
 class EntityIRABene(BaseModel):
-    pass
+    name: str
+    entityType: str
+    type: str
+    location: dict[Any, str]
+    articleOfWill: str
 
 
 class RestrictionInfo(BaseModel):
-    pass
+    id: int
+    byIB: bool
+    name: str
 
 
 class AccountDetailsResponse(BaseModel):
