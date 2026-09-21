@@ -222,7 +222,7 @@ class SignatureTypeEnum(StrEnum):
     PHYSICAL = "Physical"
 
 
-class CustomerTypeEnum(StrEnum):
+class W9CustomerTypeEnum(StrEnum):
     INDIVIDUAL = "Individual"
     CORPORATION = "Corporation"
     PARTNERSHIP = "Partnership"
@@ -518,3 +518,13 @@ class KnowledgeLevelEnum(StrEnum):
     GOOD = "Good"
     LIMITED = "Limited"
     NONE = "None"
+
+
+class CustomerTypeEnum(StrEnum):
+    INDIVIDUAL = "Individual"
+    JOINT = "Joint"
+    TRUST = "Trust"
+    UGMA = "UGMA"
+    UTMA = "UTMA"
+    ORG = "Org"
+    IRA = "IRA"

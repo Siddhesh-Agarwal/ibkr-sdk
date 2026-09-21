@@ -1,6 +1,6 @@
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, EmailStr, Field
 
 from ibkr.models.enums import (
     AccountTypeEnum,
@@ -42,6 +42,7 @@ from ibkr.models.enums import (
     TaxAuthorityEnum,
     TINTypeEnum,
     TitleCodeEnum,
+    W9CustomerTypeEnum,
 )
 
 
@@ -306,7 +307,7 @@ class FormW9(BaseModel):
     localTaxForms: list[LocalTaxForm]
     name: str
     businessName: str
-    customerType: CustomerTypeEnum
+    customerType: W9CustomerTypeEnum
     taxClassification: str
     otherCustomerType: str
     tin: str
@@ -490,7 +491,7 @@ class Individual(BaseModel):
     residenceAddress: ResidenceAddress
     mailingAddress: Address
     phones: list[PhoneInfo]
-    email: str
+    email: EmailStr
     identification: Identification
     employmentType: str
     employmentDetails: EmploymentDetails
@@ -527,7 +528,7 @@ class LegalEntity(BaseModel):
     name: str
     address: Address
     phones: list[PhoneInfo]
-    email: str
+    email: EmailStr
     legalEntityIdentification: LegalEntityIdentification
     taxResidencies: list[TaxResidency]
     id: str
@@ -571,7 +572,7 @@ class IRAPrimaryBeneficiary(BaseModel):
     residenceAddress: ResidenceAddress
     mailingAddress: Address
     phones: list[PhoneInfo]
-    email: str
+    email: EmailStr
     identification: Identification
     employmentType: str
     employmentDetails: EmploymentDetails
@@ -624,7 +625,7 @@ class IRAContingentBeneficiary(BaseModel):
     residenceAddress: ResidenceAddress
     mailingAddress: Address
     phones: list[PhoneInfo]
-    email: str
+    email: EmailStr
     identification: Identification
     employmentType: str
     employmentDetails: EmploymentDetails
@@ -685,7 +686,7 @@ class IRADecedent(BaseModel):
     residenceAddress: ResidenceAddress
     mailingAddress: Address
     phones: list[PhoneInfo]
-    email: str
+    email: EmailStr
     identification: Identification
     employmentType: str
     employmentDetails: EmploymentDetails
@@ -819,7 +820,7 @@ class AccountData(BaseModel):
     accountTitle: str
     officialTitle: str
     accountAlias: str
-    emailAddress: str
+    emailAddress: EmailStr
     margin: str
     applicantType: str
     subType: str
@@ -875,7 +876,7 @@ class AssociatedPerson(BaseModel):
     maritalStatus: str
     salutation: str
     ownershipPercentage: float
-    email: str
+    email: EmailStr
     countryOfCitizenship: str
     countryOfBirth: str
     dateOfBirth: str
@@ -901,7 +902,7 @@ class AssociatedEntity(BaseModel):
     entityId: int
     externalCode: str
     name: str
-    email: str
+    email: EmailStr
     organizationCountry: str
     phones: dict[Any, str]
     residence: dict[Any, str]
@@ -995,7 +996,7 @@ class UserDetails(BaseModel):
     residenceAddress: ResidenceAddress
     mailingAddress: Address
     phones: list[str]
-    email: str
+    email: EmailStr
     identification: Identification
     employmentType: str
     employmentDetails: EmploymentDetails
@@ -1049,8 +1050,59 @@ class AddMiFIRData(BaseModel):
     identifications: list[Identification]
 
 
+class AttachedFileType(BaseModel):
+    fileName: str
+    fileLength: int
+    sha1Checksum: str
+
+
+class FilePayload(BaseModel):
+    mimeType: str
+    data: str
+
+
 class Document(BaseModel):
-    pass
+    signedBy: list[str]
+    attachedFile: AttachedFileType
+    formNumber: int
+    validAddress: bool | None
+    execLoginTimestamp: int
+    execTimestamp: int
+    documentType: str | None
+    signature: str | None
+    externalAccountId: str | None
+    externalIndividualId: str | None
+    proofOfIdentityType: Literal[
+        "Driver License",
+        "Passport",
+        "Alien ID Card",
+        "National ID Card",
+        "Bank Statement",
+        "Evidence of Ownership of Property",
+        "Credit Card Statement",
+        "Utility Bill",
+        "Brokerage Statement",
+        "T4 Statement",
+        "CRA Assessment",
+        "Hong Kong and Macao Entry Permit",
+    ]
+    expirationDate: str
+    proofOfAddressType: Literal[
+        "Driver License",
+        "Bank Statement",
+        "Brokerage Statement",
+        "Homeowner Insurance Policy Bill",
+        "Homeowner Insurance Policy Document",
+        "Renter Insurance Policy bill",
+        "Renter Insurance Policy Document",
+        "Security System Bill",
+        "Government Issued Letters",
+        "Utility Bill",
+        "Current Lease",
+        "Evidence of Ownership of Property",
+        "Other Document",
+    ]
+    payload: FilePayload
 
 
 class DocumentSubmission(BaseModel):
@@ -1139,7 +1191,7 @@ class ChangeFinancialInformation(BaseModel):
 
 
 class UpdateEmail(BaseModel):
-    email: str
+    email: EmailStr
     token: str
     access: bool
     externalId: str
@@ -1198,13 +1250,6 @@ class LeaveDRIP(BaseModel):
 class DuplicateAccount(BaseModel):
     accountId: str
     numberOfDuplicates: int
-
-
-class DocumentSubmission(BaseModel):
-    documents: list[Document]
-    accountId: str
-    inputLanguage: LanguageEnum
-    translation: bool
 
 
 class ProcessDocuments(BaseModel):
@@ -1277,7 +1322,7 @@ class AssociatedIndividual(BaseModel):
     residenceAddress: ResidenceAddress
     mailingAddress: Address
     phones: list[PhoneInfo]
-    email: str
+    email: EmailStr
     identification: Identification
     employmentType: str
     employmentDetails: EmploymentDetails
@@ -1355,7 +1400,7 @@ class AffiliationDetailsType(BaseModel):
     company: str
     companyMailingAddress: Address
     companyPhone: str
-    companyEmailAddress: str
+    companyEmailAddress: EmailStr
     duplicateStmtRequired: bool
 
 
@@ -1470,8 +1515,51 @@ class InformationChange(BaseModel):
     ibAccountId: str
 
 
-class Customer(BaseModel):
+class OrganizationApplicant(BaseModel):
     pass
+
+
+class IndividualApplicant(BaseModel):
+    pass
+
+
+class JointApplicant(BaseModel):
+    pass
+
+
+class TrustApplicant(BaseModel):
+    pass
+
+
+class Customer(BaseModel):
+    organization: OrganizationApplicant
+    accountHolder: IndividualApplicant
+    jointHolders: JointApplicant
+    trust: TrustApplicant
+    id: str
+    externalId: str
+    transferUsMicroCapStock: bool
+    type: CustomerTypeEnum
+    prefix: str
+    userName: str
+    userNameAlias: str
+    userNameSource: str
+    email: str
+    mdStatusNonPro: bool
+    preferredPrimaryLanguage: str
+    preferredSecondaryLanguage: str
+    legalResidenceCountry: str
+    taxTreatyCountry: str
+    meetAmlStandard: str
+    meetsAmlStandard: str
+    directTradingAccess: bool
+    originCountry: str
+    terminationAge: int
+    governingState: str
+    optForDebitCard: bool
+    roboFaClient: bool
+    independentAccount: bool
+    paperAccount: bool
 
 
 class UserPrivilege(BaseModel):
