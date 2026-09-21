@@ -16,21 +16,29 @@ from ibkr.models.enums import (
     EntityTypeEnum,
     ExchangeEnum,
     ExplanationTypeEnum,
+    FATCACompliantTypeEnum,
+    FATCAStatusEnum,
     FeeDetailsTypeEnum,
     FormationTypeEnum,
     GenderEnum,
     InvestiveObjectiveEnum,
     IRATypeEnum,
+    KnowledgeLevelEnum,
+    LanguageEnum,
     MaritalStatusEnum,
     NameSuffixEnum,
     OECDStatusEnum,
+    OwnerTypeEnum,
     PhoneTypeEnum,
     ProductTypeEnum,
     ProhibitedQuestionnaireDetailCodeEnum,
     QISubTypeEnum,
+    RegulatoryDetailCodeEnum,
     RelationshipEnum,
     SalutationEnum,
     SignatureTypeEnum,
+    SourceOfIncomeTypeEnum,
+    SourceOfWealthTypeEnum,
     TaxAuthorityEnum,
     TINTypeEnum,
     TitleCodeEnum,
@@ -331,6 +339,125 @@ class FormW8BEN(BaseModel):
     submitDate: str
 
 
+class FormW8BENE(BaseModel):
+    substantialUsOwnerExternalIds: list[str]
+    name: str
+    countryOfOrganization: str
+    disregardedEntityName: str
+    entityType: Literal[
+        "CORPORATION",
+        "DISREGARDED_ENTITY",
+        "PARTNERSHIP",
+        "SIMPLE_TRUST",
+        "GRANTOR_TRUST",
+        "COMPLEX_TRUST",
+        "ESTATE",
+        "GOVERNMENT",
+        "CENTRAL_BANK_OF_ISSUE",
+        "TAX_EXEMPT_ORGANIZATION",
+        "PRIVATE_FOUNDATION",
+    ]
+    fatcaStatus: FATCAStatusEnum
+    usTin: str
+    giin: str
+    foreignTin: str
+    tinOrExplanationRequired: bool
+    explanation: Literal[
+        "US_TIN", "TIN_NOT_DISCLOSED", "TIN_NOT_REQUIRED", "TIN_NOT_ISSUED"
+    ]
+    referenceNumber: int
+    submitDate: str
+    box11Status: Literal[
+        "LIMITED_BRANCH",
+        "US_BRANCH",
+        "PARTICIPATING_FFI",
+        "REPORTING_MODEL_1_FFI",
+        "REPORTING_MODEL_2_FFI",
+    ]
+    part314A: bool
+    part314ACountry: str
+    part314B: Literal[
+        "CompanyMeetsOwnershipAndBaseErosionTest",
+        "TaxExemptPensionTrustOrPensionFund",
+        "CompanyMeetsDerivativeBenefitsTest",
+        "TaxExemptOrganization",
+        "CompanyWithIncomeActiveBusiness",
+        "PubliclyTradedCorporation",
+        "FavorableDiscretionaryDetermination",
+        "SubsidiaryOfAPubliclyTradedCorporation",
+        "Government",
+        "NoLobArticleInTreaty",
+        "Other",
+    ]
+    part314C: bool
+    part416: str
+    part417I: bool
+    part417Ii: bool
+    part518: bool
+    part619: bool
+    part720: str
+    part721: bool
+    part822: bool
+    part923: bool
+    part1024A: bool
+    part1024B: bool
+    part1024C: bool
+    part1024D: bool
+    part1125A: bool
+    part1125B: bool
+    part1125C: bool
+    part1226: bool
+    part1226Desc1: str
+    part1226Desc2: str
+    part1226Desc3: Literal[
+        "CollectiveInvestmentVehicle",
+        "ExemptBeneficialOwner-RetirementPlan",
+        "FinancialInstitutionwithlocalClientBase",
+        "InvestmentAdvisorsandManagers",
+        "LocalBank",
+        "SponsoredCloselyHeldInvestmentVehicle",
+        "SponsoredInvestmentEntity",
+        "TrusteeDocumentedTrust",
+    ]
+    part1226Desc4: str
+    part1327: bool
+    part1428A: bool
+    part1428B: bool
+    part1529A: bool
+    part1529B: bool
+    part1529C: bool
+    part1529D: bool
+    part1529E: bool
+    part1529F: bool
+    part1630: bool
+    part1731: bool
+    part1832: bool
+    part1933: bool
+    part2034: bool
+    part2135: bool
+    part2135Date: str
+    part2236: bool
+    part2337A: bool
+    part2337ADesc: str
+    part2337B: bool
+    part2337BDesc1: str
+    part2337BDesc2: str
+    part2438: bool
+    part2539: bool
+    part2640A: bool
+    part2640B: bool
+    part2640C: bool
+    part2741: bool
+    part2842: str
+    part2843: bool
+    cert: bool
+    signatureType: SignatureTypeEnum
+    blankForm: bool
+    taxFormFile: str
+    proprietaryFormNumber: int
+    electronicFormat: bool
+
+
 class FormCRS(BaseModel):
     controllingPersonDesignation: ControllingPersonDesignationEnum
     oecdStatus: OECDStatusEnum
@@ -602,22 +729,7 @@ class WireDetails(BaseModel):
 class IRADepositDetails(BaseModel):
     depositType: Literal["contribution", "rollover"]
     taxYear: Literal["current", "prior"]
-    fromIraType: Literal[
-        "RI",
-        "RO",
-        "RT",
-        "SP",
-        "ED",
-        "TH",
-        "RH",
-        "SH",
-        "RRSP",
-        "SRRSP",
-        "TFSA",
-        "SIMPLE",
-        "ISA",
-        "JISA",
-    ]
+    fromIraType: IRATypeEnum
 
 
 class DepositNotification(BaseModel):
@@ -847,3 +959,663 @@ class AccountDetailsResponse(BaseModel):
     entityIRABeneficiaries: list[EntityIRABene]
     decedents: list[Any]
     restrictions: list[RestrictionInfo]
+
+
+class UpdateExternalId(BaseModel):
+    accountId: str
+    newExternalId: str
+
+
+class UpdatePropertyProfile(BaseModel):
+    accountId: str
+    propertyProfile: str
+
+
+class UpdateAccountAlias(BaseModel):
+    accountId: str
+    accountAlias: str
+
+
+class ChangeBaseCurrency(BaseModel):
+    accountId: str
+    newBaseCurrency: BaseCurrencyEnum
+
+
+class UserDetails(BaseModel):
+    name: IndividualName
+    nativeName: IndividualName
+    birthName: IndividualName
+    motherMaidenName: IndividualName
+    dateOfBirth: str
+    countryOfBirth: str
+    cityOfBirth: str
+    gender: GenderEnum
+    maritalStatus: MaritalStatusEnum
+    numDependents: int
+    residenceAddress: ResidenceAddress
+    mailingAddress: Address
+    phones: list[str]
+    email: str
+    identification: Identification
+    employmentType: str
+    employmentDetails: EmploymentDetails
+    employeeTitle: str
+    taxResidencies: list[TaxResidency]
+    w9: FormW9
+    w8Ben: FormW8BEN
+    crs: FormCRS
+    prohibitedCountryQuestionnaire: ProhibitedCountryQuestionnaireList
+    id: str
+    externalId: str
+    userId: str
+    sameMailAddress: bool
+    authorizedToSignOnBehalfOfOwner: bool
+    authorizedTrader: bool
+    usTaxResident: bool
+    translated: bool
+    primaryTrustee: bool
+    ownershipPercentage: float
+    title: list[Title]
+    authorizedPerson: bool
+    referenceUsername: str
+
+
+class AddNewUser(BaseModel):
+    accountId: str
+    prefix: str
+    userDetails: UserDetails
+    userName: str
+    inputLanguage: LanguageEnum
+    translation: bool
+
+
+class Service(BaseModel):
+    value: int
+    action: Literal["ADD", "REMOVE"]
+
+
+class ManageMarketDataSubscriptions(BaseModel):
+    service: Service
+    referenceUserName: str
+
+
+class AddLEVFXCapability(BaseModel):
+    accountId: str
+
+
+class AddMiFIRData(BaseModel):
+    accountId: str
+    title: str
+    identifications: list[Identification]
+
+
+class Document(BaseModel):
+    pass
+
+
+class DocumentSubmission(BaseModel):
+    documents: list[Document]
+    accountId: str
+    inputLanguage: LanguageEnum
+    translation: bool
+
+
+class AddTradingPermissions(BaseModel):
+    tradingPermissions: list[TradingPermission]
+    documentSubmission: DocumentSubmission
+    accountId: str
+    optionLevel: int
+
+
+class RemoveTradingPermissions(BaseModel):
+    tradingPermissions: list[TradingPermission]
+    accountId: str
+
+
+class ChangeMarginType(BaseModel):
+    documentSubmission: DocumentSubmission
+    accountId: str
+    operation: str
+    newMargin: str
+
+
+class AddCLPCapability(BaseModel):
+    accountId: str
+    documents: list[Document]
+
+
+class AssetExperience(BaseModel):
+    assetClass: AssetClassEnum
+    yearsTrading: int
+    tradesPerYear: int
+    knowledgeLevel: KnowledgeLevelEnum
+
+
+class SourceOfIncomeType(BaseModel):
+    sourceType: SourceOfIncomeTypeEnum
+    percentage: int
+    description: str
+
+
+class SourceOfWealthType(BaseModel):
+    sourceType: SourceOfWealthTypeEnum
+    percentage: int
+    usedForFunds: bool
+    description: str
+
+
+class SOIQuestionnaire(BaseModel):
+    details: str
+
+
+class QuestionnaireType(BaseModel):
+    formNumber: int
+    details: str
+
+
+class FinancialInformation(BaseModel):
+    investmentExperience: list[AssetExperience]
+    investmentObjectives: list[InvestiveObjectiveEnum]
+    additionalSourcesOfIncome: list[SourceOfIncomeType]
+    sourcesOfWealth: list[SourceOfWealthType]
+    soiQuestionnaire: SOIQuestionnaire
+    questionnaires: list[QuestionnaireType]
+    netWorth: float
+    liquidNetWorth: float
+    annualNetIncome: float
+    totalAssets: float
+    sourceOfFunds: str
+    translated: bool
+
+
+class ResetAbandonedAccount(BaseModel):
+    accountId: str
+
+
+class ChangeFinancialInformation(BaseModel):
+    accountId: str
+    referenceUserName: str
+    newFinancialInformation: FinancialInformation
+
+
+class UpdateEmail(BaseModel):
+    email: str
+    token: str
+    access: bool
+    externalId: str
+    entityId: str
+
+
+class UpdatePassword(BaseModel):
+    encryptedPassword: str
+    encryptedKeyName: str
+    token: str
+
+
+class UpdateCredentials(BaseModel):
+    updateEmail: UpdateEmail
+    updatePassword: UpdatePassword
+    accountId: str
+    referenceUserName: str
+
+
+class RepresentativeDetail(BaseModel):
+    representativeId: str
+    percentage: int
+
+
+class UpdateAccountRepresentatives(BaseModel):
+    representativeDetails: list[RepresentativeDetail]
+    accountId: str
+
+
+class CompleteLoginMessage(BaseModel):
+    loginMessageIds: list[int]
+    accountId: str
+
+
+class ReopenAccount(BaseModel):
+    accountId: str
+
+
+class EnrollInSYEP(BaseModel):
+    accountId: str
+    documents: list[Document]
+
+
+class LeaveSYEP(BaseModel):
+    accountId: str
+
+
+class EnrollInDRIP(BaseModel):
+    accountId: str
+
+
+class LeaveDRIP(BaseModel):
+    accountId: str
+
+
+class DuplicateAccount(BaseModel):
+    accountId: str
+    numberOfDuplicates: int
+
+
+class DocumentSubmission(BaseModel):
+    documents: list[Document]
+    accountId: str
+    inputLanguage: LanguageEnum
+    translation: bool
+
+
+class ProcessDocuments(BaseModel):
+    documents: list[Document]
+    inputLanguage: LanguageEnum
+    translation: bool
+
+
+class UpdateBCAN(BaseModel):
+    accountId: str
+    bcan: str
+    ceNumber: str
+
+
+class ProhibitedCountryQuestionnaire(BaseModel):
+    prohibitedQuestionnaireDetails: list[ProhibitedQuestionnaireDetail]
+    accountId: str
+    externalId: str
+    entityId: str
+
+
+class UpdateWithholdingStatement(BaseModel):
+    accountId: str
+    fatcaCompliantType: FATCACompliantTypeEnum
+    usIncomeTax: bool
+    treatyCountry: str
+    certW8Imy: bool
+    effectiveDate: str
+
+
+class QualifiedPurchaserDetail(BaseModel):
+    code: Literal["InvestmentCompanyAct", "DiscretionaryBasis"]
+    status: bool
+
+
+class QualifiedPurchaser(BaseModel):
+    qualifiedPurchaserDetails: list[QualifiedPurchaserDetail]
+    status: bool
+
+
+class EligibleContractParticipantDetail(BaseModel):
+    code: Literal["DiscretionaryBasis", "HighRisk"]
+    status: bool
+
+
+class EligibleContractParticipant(BaseModel):
+    eligibleContractParticipantDetails: list[EligibleContractParticipantDetail]
+    status: bool
+
+
+class AccreditedInvestor(BaseModel):
+    qualifiedPurchaser: QualifiedPurchaser
+    eligibleContractParticipant: EligibleContractParticipant
+    signedBy: list[str]
+    accountId: str
+    status: bool
+    signature: str
+
+
+class AssociatedIndividual(BaseModel):
+    name: IndividualName
+    nativeName: IndividualName
+    birthName: IndividualName
+    motherMaidenName: IndividualName
+    countryOfBirth: str
+    cityOfBirth: str
+    gender: GenderEnum
+    maritalStatus: MaritalStatusEnum
+    numDependents: int
+    residenceAddress: ResidenceAddress
+    mailingAddress: Address
+    phones: list[PhoneInfo]
+    email: str
+    identification: Identification
+    employmentType: str
+    employmentDetails: EmploymentDetails
+    employeeTitle: str
+    taxResidencies: list[TaxResidency]
+    w9: FormW9
+    w8Ben: FormW8BEN
+    crs: FormCRS
+    prohibitedCountryQuestionnaire: ProhibitedCountryQuestionnaireList
+    id: str
+    externalId: str
+    userId: str
+    sameMailAddress: bool
+    authorizedToSignOnBehalfOfOwner: bool
+    authorizedTrader: bool
+    usTaxResident: bool
+    translated: bool
+    primaryTrustee: bool
+    ownerType: OwnerTypeEnum
+    ownershipPercentage: float
+    titles: list[Title]
+    authorizedPerson: bool
+    referenceUsername: str
+
+
+class ChangeAccountHolderDetail(BaseModel):
+    newAccountHolderDetails: list[AssociatedIndividual]
+    documents: DocumentSubmission
+    accountId: str
+    referenceUserName: str
+    inputLanguage: str
+    Enum: str
+    Array: list[str]
+    translation: bool
+
+
+class UpdateUserAccessRights(BaseModel):
+    subAccounts: list[str]
+    repId: str
+    action: str
+
+
+class OrganizationIdentification(BaseModel):
+    placeOfBusinessAddress: Address
+    mailingAddress: Address
+    phones: list[PhoneInfo]
+    name: str
+    businessDescription: str
+    websiteAddress: str
+    identification: str
+    identificationCountry: str
+    formationCountry: str
+    formationState: str
+    sameMailAddress: bool
+    translated: bool
+
+
+class RegulatoryDetail(BaseModel):
+    code: RegulatoryDetailCodeEnum
+    status: bool
+    details: str
+    detail: str
+    externalIndividualId: str
+
+
+class SelfRegulatedMembershipType(BaseModel):
+    exchanges: str
+    organizations: str
+
+
+class AffiliationDetailsType(BaseModel):
+    affiliationRelationship: Literal["Self", "Spouse", "Parent", "Child", "Other"]
+    personName: str
+    companyId: int
+    company: str
+    companyMailingAddress: Address
+    companyPhone: str
+    companyEmailAddress: str
+    duplicateStmtRequired: bool
+
+
+class PublicCompanyInfoType(BaseModel):
+    exchangeTradedOn: str
+    quotedSymbol: str
+
+
+class ORGRegulatorType(BaseModel):
+    regulatorName: str
+    regulatorCountry: str
+    regulatedInCapacity: str
+    regulatorId: str
+
+
+class ORGRegulatoryInfoType(BaseModel):
+    publicCompanyInfo: PublicCompanyInfoType
+    orgRegulators: list[ORGRegulatorType]
+    regulated: bool
+    public: bool
+
+
+class PoliticalMilitaryDiplomaticDetailsType(BaseModel):
+    personName: str
+    title: str
+    organization: str
+    country: str
+
+
+class RegulatoryInformation(BaseModel):
+    regulatoryDetails: list[RegulatoryDetail]
+    regulatoryDetail: list[RegulatoryDetail]
+    selfRegulatedMembership: SelfRegulatedMembershipType
+    affiliationDetails: AffiliationDetailsType
+    financialOrgTypes: list[str]
+    orgRegulatoryInfo: ORGRegulatoryInfoType
+    ausExposureDetails: AUSExposureDetailsType
+    controllerExchangeCode: str
+    politicalMilitaryDiplomaticDetails: PoliticalMilitaryDiplomaticDetailsType
+    translated: bool
+
+
+class Organization(BaseModel):
+    identification: OrganizationIdentification
+    regulatoryInformation: RegulatoryInformation
+    associatedEntities: AssociatedEntities
+
+
+class AddRelationship(BaseModel):
+    name: str
+    ownershipPercentage: int
+
+
+class AddEntity(BaseModel):
+    addRelationships: list[AddRelationship]
+    individual: Individual
+    legalEntity: LegalEntity
+    organization: Organization
+    documents: list[Document]
+
+
+class TrustIdentification(BaseModel):
+    address: Address
+    mailingAddress: Address
+    phones: list[PhoneInfo]
+    name: str
+    description: str
+    typeOfTrust: Literal[
+        "IRREVOC", "SMSF", "REVOCABLE", "TESTAMENTARY", "RETIREMENT", "ERISA", "OTHER"
+    ]
+    purposeOfTrust: str
+    dateFormed: str
+    formationCountry: str
+    formationState: str
+    registrationNumber: str
+    registrationType: TINTypeEnum
+    registrationCountry: str
+    sameMailAddress: bool
+    translated: bool
+
+
+class Trust(BaseModel):
+    identification: TrustIdentification
+    regulatoryInformation: RegulatoryInformation
+
+
+class DeleteRelationship(BaseModel):
+    name: str
+
+
+class UpdateEntity(BaseModel):
+    addRelationships: list[AddRelationship]
+    deleteRelationships: list[DeleteRelationship]
+    individual: Individual
+    legalEntity: LegalEntity
+    trust: Trust
+    organization: Organization
+    documents: list[Document]
+    ibEntityId: int
+    externalId: str
+
+
+class DeleteEntity(BaseModel):
+    ibEntityId: int
+    externalId: str
+
+
+class InformationChange(BaseModel):
+    addEntities: list[AddEntity]
+    updateEntities: list[UpdateEntity]
+    deleteEntities: list[DeleteEntity]
+    ibAccountId: str
+
+
+class Customer(BaseModel):
+    pass
+
+
+class UserPrivilege(BaseModel):
+    externalAccountId: str
+    privilege: Literal["OWNER", "TRADER", "CUSTOM", "NONE"]
+
+
+class User(BaseModel):
+    userPrivileges: list[UserPrivilege]
+    mdServices: list[int]
+    id: str
+    externalUserId: str
+    externalIndividualId: str
+    encryptedPassword: str
+    encryptedKeyName: str
+    prefix: str
+
+
+class AddAdditionalAccount(BaseModel):
+    customer: Customer
+    account: Account
+    documents: list[Document]
+    users: list[User]
+    accountId: str
+
+
+class AllocateVAN(BaseModel):
+    accountId: str
+    currency: BaseCurrencyEnum
+    countryCode: str
+
+
+class CreateUser(BaseModel):
+    accountId: str
+    prefix: str
+    userName: str
+    id: str
+    externalId: str
+    authorizedTrader: bool
+
+
+class UpdateTaxForm(BaseModel):
+    localTaxForms: list[LocalTaxForm]
+    w8Ben: FormW8BEN
+    w8BenE: FormW8BENE
+    w9: FormW9
+    translation: bool
+    inputLanguage: LanguageEnum
+    accountId: str
+    documents: list[Document]
+    entityId: str
+    externalId: str
+
+
+class AnswerDetail(BaseModel):
+    name: str
+    detail: str
+
+
+class Answer(BaseModel):
+    answerDetail: list[AnswerDetail]
+    detail: str
+    id: int
+    questionId: int
+
+
+class Questionnaire(BaseModel):
+    answers: list[Answer]
+    formNumber: int
+
+
+class QuestionnairesWithAccount(BaseModel):
+    questionnaire: list[Questionnaire]
+    accountId: str
+
+
+class Details(BaseModel):
+    question: str
+    answer: str
+
+
+class SecurityQuestions(BaseModel):
+    details: list[Details]
+    referenceUserName: str
+    inputLanguage: LanguageEnum
+
+
+class ApplyFeeTemplate(BaseModel):
+    accountId: str
+    templateName: str
+
+
+class Task(BaseModel):
+    formNumber: int
+    status: bool
+
+
+class QuizQuestionnaires(BaseModel):
+    questionnaire: list[Questionnaire]
+    accountId: str
+    task: list[Task]
+
+
+class AccountManagementRequests(BaseModel):
+    updateExternalId: UpdateExternalId
+    updatePropertyProfile: UpdatePropertyProfile
+    updateAccountAlias: UpdateAccountAlias
+    changeBaseCurrency: ChangeBaseCurrency
+    abandonAccount: AbandonAccount
+    addNewUser: AddNewUser
+    addLevFxCapability: AddLEVFXCapability
+    addMiFirData: AddMiFIRData
+    addTradingPermissions: AddTradingPermissions
+    removeTradingPermissions: RemoveTradingPermissions
+    changeMarginType: ChangeMarginType
+    addCLPCapability: AddCLPCapability
+    changeFinancialInformation: ChangeFinancialInformation
+    resetAbandonedAccount: ResetAbandonedAccount
+    updateCredentials: list[UpdateCredentials]
+    updateAccountRepresentatives: UpdateAccountRepresentatives
+    completeLoginMessage: CompleteLoginMessage
+    reopenAccount: ReopenAccount
+    enrollInSyep: EnrollInSYEP
+    leaveSyep: LeaveSYEP
+    enrollInDrip: EnrollInDRIP
+    leaveDrip: LeaveDRIP
+    duplicateAccount: DuplicateAccount
+    documentSubmission: DocumentSubmission
+    processDocuments: ProcessDocuments
+    updateBcan: UpdateBCAN
+    prohibitedCountryQuestionnaire: ProhibitedCountryQuestionnaire
+    updateWithholdingStatement: UpdateWithholdingStatement
+    accreditedInvestor: AccreditedInvestor
+    changeAccountHolderDetail: ChangeAccountHolderDetail
+    updateUserAccessRights: UpdateUserAccessRights
+    informationChange: InformationChange
+    addAdditionalAccount: AddAdditionalAccount
+    accountConfiguration: AccountConfiguration
+    allocateVan: AllocateVAN
+    createUser: CreateUser
+    updateTaxForm: UpdateTaxForm
+    questionnaires: QuestionnairesWithAccount
+    securityQuestions: SecurityQuestions
+    applyFeeTemplate: ApplyFeeTemplate
+    accountClose: AccountClose
+    manageMarketDataSubscriptions: list[ManageMarketDataSubscriptions]
+    quizQuestionnaires: QuizQuestionnaires
