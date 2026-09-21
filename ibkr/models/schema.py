@@ -470,11 +470,14 @@ class ProhibitedQuestionnaireDetail(BaseModel):
     details: str
 
 
-class ProhibitedCountryQuestionnaireList(BaseModel):
-    prohibitedQuestionnaireDetail: list[ProhibitedQuestionnaireDetail]
+class ProhibitedCountryQuestionnaireBase(BaseModel):
     accountId: str
     externalId: str
     entityId: str
+
+
+class ProhibitedCountryQuestionnaireList(ProhibitedCountryQuestionnaireBase):
+    prohibitedQuestionnaireDetail: list[ProhibitedQuestionnaireDetail]
 
 
 class Individual(BaseModel):
@@ -485,7 +488,7 @@ class Individual(BaseModel):
     dateOfBirth: str
     countryOfBirth: str
     cityOfBirth: str
-    gende: GenderEnum
+    gender: GenderEnum
     maritalStatus: MaritalStatusEnum
     numDependents: int
     residenceAddress: ResidenceAddress
@@ -558,92 +561,7 @@ class Title(BaseModel):
     code: TitleCodeEnum
 
 
-class IRAPrimaryBeneficiary(BaseModel):
-    name: IndividualName
-    nativeName: IndividualName
-    birthName: IndividualName
-    motherMaidenName: IndividualName
-    dateOfBirth: str
-    countryOfBirth: str
-    cityOfBirth: str
-    gender: GenderEnum
-    maritalStatus: MaritalStatusEnum
-    numDependents: int
-    residenceAddress: ResidenceAddress
-    mailingAddress: Address
-    phones: list[PhoneInfo]
-    email: EmailStr
-    identification: Identification
-    employmentType: str
-    employmentDetails: EmploymentDetails
-    employeeTitle: str
-    taxResidencies: list[TaxResidency]
-    w9: FormW9
-    w8Ben: FormW8BEN
-    crs: FormCRS
-    prohibitedCountryQuestionnaire: ProhibitedCountryQuestionnaireList
-    id: str
-    externalId: str
-    userId: str
-    sameMailAddress: bool
-    authorizedToSignOnBehalfOfOwner: bool
-    authorizedTrader: bool
-    usTaxResident: bool
-    translated: bool
-    primaryTrustee: bool
-    ownershipPercentage: float
-    title: Title
-    relationship: RelationshipEnum
-
-
-class IRAPrimaryBeneficiaryEntity(BaseModel):
-    name: str
-    address: Address
-    id: str
-    externalId: str
-    ownershipPercentage: str
-    title: Title
-    relationship: RelationshipEnum
-    executor: Individual
-    executionDate: str
-    articleOfWill: str
-    entityType: EntityTypeEnum
-    charityNumber: str
-
-
-class IRAContingentBeneficiary(BaseModel):
-    name: IndividualName
-    nativeName: IndividualName
-    birthName: IndividualName
-    motherMaidenName: IndividualName
-    dateOfBirth: str
-    countryOfBirth: str
-    cityOfBirth: str
-    gender: GenderEnum
-    maritalStatus: MaritalStatusEnum
-    numDependents: int
-    residenceAddress: ResidenceAddress
-    mailingAddress: Address
-    phones: list[PhoneInfo]
-    email: EmailStr
-    identification: Identification
-    employmentType: str
-    employmentDetails: EmploymentDetails
-    employeeTitle: str
-    taxResidencies: list[TaxResidency]
-    w9: FormW9
-    w8Ben: FormW8BEN
-    crs: FormCRS
-    prohibitedCountryQuestionnaire: ProhibitedCountryQuestionnaireList
-    id: str
-    externalId: str
-    userId: str
-    sameMailAddress: bool
-    authorizedToSignOnBehalfOfOwner: bool
-    authorizedTrader: bool
-    usTaxResident: bool
-    translated: bool
-    primaryTrustee: bool
+class IRAPrimaryBeneficiary(Individual):
     ownershipPercentage: float
     title: Title
     relationship: RelationshipEnum
@@ -654,13 +572,21 @@ class IRAContingentBeneficiaryEntity(BaseModel):
     address: Address
     id: str
     externalId: str
-    ownershipPercentage: float
     title: Title
     relationship: RelationshipEnum
     executor: Individual
     executionDate: str
     articleOfWill: str
     entityType: EntityTypeEnum
+    ownershipPercentage: float
+
+
+class IRAPrimaryBeneficiaryEntity(IRAContingentBeneficiaryEntity):
+    charityNumber: str
+
+
+class IRAContingentBeneficiary(IRAPrimaryBeneficiary):
+    pass
 
 
 class IRABeneficiariesType(BaseModel):
@@ -672,39 +598,7 @@ class IRABeneficiariesType(BaseModel):
     successor: bool
 
 
-class IRADecedent(BaseModel):
-    name: IndividualName
-    nativeName: IndividualName
-    birthName: IndividualName
-    motherMaidenName: IndividualName
-    dateOfBirth: str
-    countryOfBirth: str
-    cityOfBirth: str
-    gender: GenderEnum
-    maritalStatus: MaritalStatusEnum
-    numDependents: int
-    residenceAddress: ResidenceAddress
-    mailingAddress: Address
-    phones: list[PhoneInfo]
-    email: EmailStr
-    identification: Identification
-    employmentType: str
-    employmentDetails: EmploymentDetails
-    employeeTitle: str
-    taxResidencies: list[TaxResidency]
-    w9: FormW9
-    w8Ben: FormW8BEN
-    crs: FormCRS
-    prohibitedCountryQuestionnaire: ProhibitedCountryQuestionnaireList
-    id: str
-    externalId: str
-    userId: str
-    sameMailAddress: bool
-    authorizedToSignOnBehalfOfOwner: bool
-    authorizedTrader: bool
-    usTaxResident: bool
-    translated: bool
-    primaryTrustee: bool
+class IRADecedent(Individual):
     dateOfDeath: str
     title: Title
     inheritorType: Literal["S", "I", "T", "O"]
@@ -982,39 +876,8 @@ class ChangeBaseCurrency(BaseModel):
     newBaseCurrency: BaseCurrencyEnum
 
 
-class UserDetails(BaseModel):
-    name: IndividualName
-    nativeName: IndividualName
-    birthName: IndividualName
-    motherMaidenName: IndividualName
-    dateOfBirth: str
-    countryOfBirth: str
-    cityOfBirth: str
-    gender: GenderEnum
-    maritalStatus: MaritalStatusEnum
-    numDependents: int
-    residenceAddress: ResidenceAddress
-    mailingAddress: Address
+class UserDetails(Individual):
     phones: list[str]
-    email: EmailStr
-    identification: Identification
-    employmentType: str
-    employmentDetails: EmploymentDetails
-    employeeTitle: str
-    taxResidencies: list[TaxResidency]
-    w9: FormW9
-    w8Ben: FormW8BEN
-    crs: FormCRS
-    prohibitedCountryQuestionnaire: ProhibitedCountryQuestionnaireList
-    id: str
-    externalId: str
-    userId: str
-    sameMailAddress: bool
-    authorizedToSignOnBehalfOfOwner: bool
-    authorizedTrader: bool
-    usTaxResident: bool
-    translated: bool
-    primaryTrustee: bool
     ownershipPercentage: float
     title: list[Title]
     authorizedPerson: bool
@@ -1264,11 +1127,8 @@ class UpdateBCAN(BaseModel):
     ceNumber: str
 
 
-class ProhibitedCountryQuestionnaire(BaseModel):
+class ProhibitedCountryQuestionnaire(ProhibitedCountryQuestionnaireBase):
     prohibitedQuestionnaireDetails: list[ProhibitedQuestionnaireDetail]
-    accountId: str
-    externalId: str
-    entityId: str
 
 
 class UpdateWithholdingStatement(BaseModel):
