@@ -528,3 +528,18 @@ class CustomerTypeEnum(StrEnum):
     UTMA = "UTMA"
     ORG = "Org"
     IRA = "IRA"
+
+
+class JointApplicantTypeEnum(StrEnum):
+    COMMUNITY = "community"
+    JOIN_TENANTS = "joint_tenants"
+    TENANTS_COMMON = "tenants_common"
+    TBE = "tbe"
+    AU_JOIN_ACCOUNT = "au_joint_account"
+
+
+class TrustTypeEnum(StrEnum):
+    COMPLEX_TRUST = "COMPLEX_TRUST"
+    SINGLE_TRUST = "SINGLE_TRUST"
+    GRANTOR_TRUST = "GRANTOR_TRUST"
+    US_TAXABLE_TRUST = "US_TAXABLE_TRUST"

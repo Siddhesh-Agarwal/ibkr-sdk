@@ -23,6 +23,7 @@ from ibkr.models.enums import (
     GenderEnum,
     InvestiveObjectiveEnum,
     IRATypeEnum,
+    JointApplicantTypeEnum,
     KnowledgeLevelEnum,
     LanguageEnum,
     MaritalStatusEnum,
@@ -42,6 +43,7 @@ from ibkr.models.enums import (
     TaxAuthorityEnum,
     TINTypeEnum,
     TitleCodeEnum,
+    TrustTypeEnum,
     W9CustomerTypeEnum,
 )
 
@@ -65,6 +67,20 @@ class AUSExposureDetailsType(BaseModel):
 
 class AbandonAccount(BaseModel):
     accountId: str
+
+
+class TradingInstrumentDescription(BaseModel):
+    securityIdType: Literal["CUSIP", "ISIN", "CASH"]
+    securityId: str
+    assetType: Literal["STK", "CASH", "UNKNOWN", "BILL", "BOND", "FUND", "OPT", "WAR"]
+
+
+class AcatsPositionV2(BaseModel):
+    quatity: int = Field(gt=0)
+    type: Literal["LONG", "SHORT"]
+    transferAll: bool = False
+    conid: float | None = None
+    tradingInstrumentDescription: TradingInstrumentDescription | None = None
 
 
 class AccountConfigurationType(BaseModel):
@@ -459,6 +475,99 @@ class FormW8BENE(BaseModel):
     electronicFormat: bool
 
 
+class FormW8IMY(BaseModel):
+    name: str
+    countryOfIncorporation: str
+    disregardedEntityName: str
+    entityType: Literal[
+        "QUALIFIED_INTERMEDIARY",
+        "NONQUALIFIED_INTERMEDIARY",
+        "TERRITORY_FINANCIAL",
+        "US_BRANCH",
+        "WITHHOLDING_FOREIGN_PARTNERSHIP",
+        "WITHHOLDING_FOREIGN_TRUST",
+        "NONWITHHOLDING_FOREIGN_PARTNERSHIP",
+        "NONWITHHOLDING_FOREIGN_SIMPLE_TRUST",
+        "NONWITHHOLDING_FOREIGN_GRANTOR_TRUST",
+    ]
+    fatcaStatus: FATCAStatusEnum
+    usTin: str
+    usTinType: Literal["QI-EIN", "WP-EIN", "WT-EIN", "EIN", "SSN", "ITIN"]
+    giin: str
+    referenceNumber: int
+    box11Status: Literal[
+        "LIMITED_BRANCH",
+        "US_BRANCH",
+        "PARTICIPATING_FFI",
+        "REPORTING_MODEL_1_FFI",
+        "REPORTING_MODEL_2_FFI",
+    ]
+    part314A: bool
+    part314B: bool
+    part314C: bool
+    part314CDesc: str
+    part314D: bool
+    part314DDesc: str
+    part314E: bool
+    part314EDesc: str
+    part314EI: bool
+    part314EIi: bool
+    part415A: bool
+    part415B: bool
+    part415C: bool
+    part415D: bool
+    part516A: bool
+    part516B: bool
+    part516C: bool
+    part617A: bool
+    part617B: bool
+    part617C: bool
+    part718: bool
+    part819: bool
+    part920: bool
+    part1021: str
+    part1021A: str
+    part1021B: bool
+    part1021C: bool
+    part1122A: bool
+    part1122B: bool
+    part1122C: bool
+    part1223: bool
+    part1324: bool
+    part1425A: str
+    part1425B: bool
+    part1526: bool
+    part1627A: bool
+    part1627B: bool
+    part1627C: bool
+    part1728: bool
+    part1829: bool
+    part1829Desc1: str
+    part1829Desc2: str
+    part1829Desc3: str
+    part1930A: bool
+    part1930B: bool
+    part1930C: bool
+    part1930D: bool
+    part1930E: bool
+    part1930F: bool
+    part2031: bool
+    part2132: bool
+    part2132Desc: str
+    part2233: bool
+    part2233Desc: str
+    part2334A: bool
+    part2334ADesc: str
+    part2334B: bool
+    part2334BDesc: str
+    part2435: bool
+    part2536: bool
+    part2637: bool
+    part2738: str
+    part2739: bool
+    cert: bool
+
+
 class FormCRS(BaseModel):
     controllingPersonDesignation: ControllingPersonDesignationEnum
     oecdStatus: OECDStatusEnum
@@ -586,7 +695,40 @@ class IRAPrimaryBeneficiaryEntity(IRAContingentBeneficiaryEntity):
 
 
 class IRAContingentBeneficiary(IRAPrimaryBeneficiary):
-    pass
+    name: IndividualName
+    nativeName: IndividualName
+    birthName: IndividualName
+    motherMaidenName: IndividualName
+    countryOfBirth: str
+    cityOfBirth: str
+    gender: GenderEnum
+    maritalStatus: MaritalStatusEnum
+    numDependents: int
+    residenceAddress: ResidenceAddress
+    mailingAddress: Address
+    phones: list[PhoneInfo]
+    email: EmailStr
+    identification: Identification
+    employmentType: str
+    employmentDetails: EmploymentDetails
+    employeeTitle: str
+    taxResidencies: list[TaxResidency]
+    w9: FormW9
+    w8Ben: FormW8BEN
+    crs: FormCRS
+    prohibitedCountryQuestionnaire: ProhibitedCountryQuestionnaireList
+    id: str
+    externalId: str
+    userId: str
+    sameMailAddress: bool
+    authorizedToSignOnBehalfOfOwner: bool
+    authorizedTrader: bool
+    usTaxResident: bool
+    translated: bool
+    primaryTrustee: bool
+    ownershipPercentage: float
+    title: Title
+    relationship: RelationshipEnum
 
 
 class IRABeneficiariesType(BaseModel):
@@ -1379,16 +1521,68 @@ class OrganizationApplicant(BaseModel):
     pass
 
 
-class IndividualApplicant(BaseModel):
+class RegulatedMembership(BaseModel):
     pass
 
 
+class AccreditedInvestorInformation(BaseModel):
+    pass
+
+
+class IndividualTaxInformation(BaseModel):
+    pass
+
+
+class WithholdingStatementType(BaseModel):
+    pass
+
+
+class IndividualApplicant(BaseModel):
+    accountHolderDetails: list[AssociatedIndividual]
+    associatedIndividual: AssociatedIndividual
+    financialInformation: list[FinancialInformation]
+    regulatoryInformation: list[RegulatoryInformation]
+    regulatedMemberships: list[RegulatedMembership]
+    accreditedInvestorInformation: AccreditedInvestorInformation
+    taxInformation: IndividualTaxInformation
+    withholdingStatement: WithholdingStatementType
+
+
 class JointApplicant(BaseModel):
+    firstHolderDetails: list[AssociatedIndividual]
+    secondHolderDetails: list[AssociatedIndividual]
+    financialInformation: list[FinancialInformation]
+    regulatoryInformation: list[RegulatoryInformation]
+    regulatedMemberships: list[RegulatedMembership]
+    accreditedInvestorInformation: AccreditedInvestorInformation
+    taxInformation: IndividualTaxInformation
+    withholdingStatement: WithholdingStatementType
+    type: JointApplicantTypeEnum
+
+
+class TrusteesType(BaseModel):
+    pass
+
+
+class AssociationTypeEntities(BaseModel):
     pass
 
 
 class TrustApplicant(BaseModel):
-    pass
+    identification: list[TrustIdentification]
+    financialInformation: list[FinancialInformation]
+    regulatoryInformation: list[RegulatoryInformation]
+    regulatedMemberships: list[RegulatedMembership]
+    accreditedInvestorInformation: AccreditedInvestorInformation
+    trustees: TrusteesType
+    beneficiaries: AssociationTypeEntities
+    grantors: AssociationTypeEntities
+    taxResidencies: list[TaxResidency]
+    w8BenE: FormW8BENE
+    w8IMY: FormW8IMY
+    withholdingStatement: WithholdingStatementType
+    thirdPartyManagement: bool
+    trustType: TrustTypeEnum
 
 
 class Customer(BaseModel):
@@ -1567,3 +1761,92 @@ class AccountManagementRequests(BaseModel):
     accountClose: AccountClose
     manageMarketDataSubscriptions: list[ManageMarketDataSubscriptions]
     quizQuestionnaires: QuizQuestionnaires
+
+
+class AccountManagementRequestsPayload(BaseModel):
+    accountManagementRequests: AccountManagementRequests
+
+
+class AccountRep(BaseModel):
+    repDetails: list[RepDetail]
+    included: bool
+
+
+class AccountRestrictionsResponse(BaseModel):
+    description: str
+    status: str
+    accountId: str
+    restrictionIds: list[int]
+
+
+class AccountStatusResponse(BaseModel):
+    dateOpened: str
+    dateStarted: str
+    dateClosed: str
+    accountId: str
+    status: str
+    description: str
+    masterAccountId: str
+    adminAccountId: str
+    state: str
+    message: str
+
+
+class AccountStatusBulkResponse(BaseModel):
+    accounts: list[AccountStatusResponse]
+    offset: int
+    limit: int
+    total: int
+
+
+class AccountStatusRequest(BaseModel):
+    startDate: str
+    endDate: str
+    offset: int = Field(ge=0)
+    limit: int = Field(ge=0, le=1000)
+    status: Literal[
+        "N", "O", "P", "C", "A", "E", "F", "I", "J", "L", "M", "R", "W", "Q"
+    ]
+
+
+class AccountStatusResponse(BaseModel):
+    dateOpened: str
+    dateStarted: str
+    dateClosed: str
+    accountId: str
+    status: str
+    description: str
+    masterAccountId: str
+    adminAccountId: str
+    state: str
+    message: str
+
+
+class PrimaryContributorType(BaseModel):
+    pass
+
+
+class AdministratorType(BaseModel):
+    pass
+
+
+class AdministratorContactPersonType(BaseModel):
+    pass
+
+
+class AccountSupportType(BaseModel):
+    businessDescription: str
+    primaryContributor: PrimaryContributorType
+    administrator: AdministratorType
+    administratorContactPerson: AdministratorContactPersonType
+    ownersResideUS: bool
+    solicitOwnersResideUS: bool
+    acceptOwnersResideUS: bool
+    type: Literal[
+        "FINANCIALINSTITUTION",
+        "PROPRIETARYTRADING",
+        "FAMILYINVVEHICLE",
+        "OPERATINGBUSINESS",
+        "BROKERDEALER",
+        "LICENSEDADVISOR",
+    ]
